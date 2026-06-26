@@ -1,0 +1,94 @@
+<div class="SSMISSD02">
+  <ro-message-guide></ro-message-guide>
+
+  <!-- 取込設定検索パネル -->
+  <ra-panel title="取込設定" ref="ref_validate1">
+    <div class="float">
+      <div>
+       <form method="post" enctype="multipart/form-data">
+         <sm-import-csv buttonName="取込"></sm-import-csv>
+       </form>
+      </div>
+      <div>サンプル CSV のダウンロードは
+      <ra-link @click="onClickSampleDownload" type="primary" class="sample-csv-link">こちら</ra-link>
+      </div>
+      <div>ファイルフォーマットはShift-JISとなります。</div>
+      <div class="annotation">
+        {{SSMISSD02Const.YUBIN_ANNOTATION1}}<br />
+        {{SSMISSD02Const.YUBIN_ANNOTATION2}}<br />
+        {{SSMISSD02Const.YUBIN_ANNOTATION3}}<br />
+        {{SSMISSD02Const.YUBIN_ANNOTATION4}}
+      </div>
+    </div>
+  </ra-panel>
+
+  <ra-panel title="取込履歴" ref="ref_validate2">
+    <div class="">
+      <div class="bottunRight">
+        <div>
+          <!-- CSV出力ボタン -->
+          <ra-link class="screenup" @click="initialize" type="primary">画面更新</ra-link>
+        </div>
+      </div>
+
+      <div class="clear">
+        <sm-pagination
+          :total="total"
+          :page.sync="tablePage.currentPage"
+          :limit.sync="tablePage.pageSize"
+          @pagination="handlePaging"
+          small
+        ></sm-pagination>
+        <vxe-table
+          ref="xTable"
+          :height="tHeight"
+          show-overflow
+          :data.sync="tablePage.displayList"
+          :mouse-config="{selected: true}"
+          :sort-config="{sortMethod: sort}"
+          :keyboard-config="{isArrow: true, isTab: true}"
+        >
+          <vxe-table-column
+            field="seq"
+            title="No."
+            align="right"
+            width="80"
+            sortable
+          ></vxe-table-column>
+          <vxe-table-column
+            field="d_toroku"
+            width="140"
+            title="取込日時"
+            sortable
+          ></vxe-table-column>
+          <vxe-table-column
+            field="n_torikomikensu"
+            width="100"
+            title="取込件数"
+            sortable
+          ></vxe-table-column>
+          <vxe-table-column
+            field="torikomistatus"
+            width="120"
+            title="ステータス"
+            sortable
+          ></vxe-table-column>
+          <vxe-table-column
+            field="torikomimessage_cd"
+            width="500"
+            title="ステータスメッセージ"
+            sortable
+          ></vxe-table-column>
+          <vxe-table-column
+            field="torikomifile_nm"
+            width="400"
+            title="ファイル名"
+            sortable
+          ></vxe-table-column>
+          <!-- <vxe-table-column field="" width="120" title="取込マッピング" sortable></vxe-table-column> -->
+          <!-- <vxe-table-column field="" width="120" title="最終更新者" sortable></vxe-table-column> -->
+        </vxe-table>
+      </div>
+    </div>
+  </ra-panel>
+</div>

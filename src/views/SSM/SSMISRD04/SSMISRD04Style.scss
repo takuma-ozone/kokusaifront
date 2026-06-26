@@ -1,0 +1,183 @@
+@charset "utf-8";
+
+// CSSグリッド
+.gridContainer {
+  display: grid;
+  grid-template:
+    'headerArea' 65px
+    'msgArea' 12px
+    'registErrorPanel' 200px
+    'footerButton' auto/ 1fr;
+  grid-gap: 0px;
+  margin: 0 3px;
+  min-width: 600px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// CSSグリッド
+$areas: registErrorPanel, footerButton;
+
+@each $area in $areas {
+  ##{$area} {
+    grid-area: #{$area};
+  }
+}
+
+.gap1 {
+  margin-top: 6px;
+}
+
+.dataLeft {
+  white-space: nowrap;
+  min-width: 550px;
+}
+
+.dataRight {
+  white-space: nowrap;
+  min-width: 550px;
+}
+
+.bottunRight {
+  text-align: right;
+}
+
+.buttontable {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+#footerButton .el-button {
+  width: 147px;
+  margin-top: 16px;
+}
+
+#registErrorPanel {
+  width: 800px;
+  align-self: center;
+  justify-self: center;
+
+  div.el-card {
+    height: 200px;
+  }
+}
+
+#footerButton {
+  justify-self: center;
+}
+
+.el-header {
+  height: 50px;
+  margin-top: 10px;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  padding: 0 !important;
+
+  .hamburger-container {
+    line-height: 46px;
+    height: 100%;
+    float: left;
+    cursor: pointer;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.025);
+    }
+  }
+
+  .breadcrumb-container {
+    float: left;
+  }
+
+  .right-menu {
+    float: right;
+    height: 100%;
+    line-height: 50px;
+
+    &:focus {
+      outline: none;
+    }
+
+    .right-menu-item {
+      display: inline-block;
+      padding: 0 8px;
+      height: 100%;
+      font-size: 14px;
+      color: #5a5e66;
+      vertical-align: text-bottom;
+
+      &.hover-effect {
+        cursor: pointer;
+        transition: background 0.3s;
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.025);
+          color: rgba(0, 0, 255, 0.658);
+        }
+      }
+    }
+
+    .avatar-container {
+      margin-right: 30px;
+
+      .avatar-wrapper {
+        margin-top: 5px;
+        position: relative;
+
+        .user-avatar {
+          cursor: pointer;
+          width: 20px;
+          height: 20px;
+          border-radius: 10px;
+        }
+
+        .el-icon-caret-bottom {
+          cursor: pointer;
+          position: absolute;
+          right: -20px;
+          top: 25px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  .right-menu2 {
+    float: right;
+    line-height: 15px;
+    margin: 7px 30px 0px 0px;
+    font-size: 13px;
+    color: #5a5e66;
+  }
+
+  .image-logo1 {
+    float: left;
+    height: 48px;
+    margin: 0px 0px 0px 0px;
+  }
+
+  .display-title {
+    --color: #3c64aa;
+    margin: 2px 0px 0px 10px;
+    float: left;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--color);
+  }
+
+  .display-split {
+    transform: scale(0.8, 1.45);
+    bottom: 0.6px;
+    margin-left: 6px;
+    float: left;
+    font-size: 27px;
+    color: #899bcb;
+  }
+}

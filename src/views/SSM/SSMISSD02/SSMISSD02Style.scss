@@ -1,0 +1,31 @@
+@charset "utf-8";
+
+.dataLeft {
+  white-space: nowrap;
+  min-width: 550px;
+}
+
+.dataRight {
+  white-space: nowrap;
+  min-width: 550px;
+}
+
+.bottunRight {
+  text-align: right;
+}
+.screenup {
+  font-size: 14pt;
+}
+
+.sample-csv-link {
+  vertical-align: baseline;
+}
+
+// 注釈の位置
+.annotation {
+  position: absolute;
+  margin-top: -110px;
+  left: 350px;
+  z-index: 1;
+  white-space: nowrap;
+}

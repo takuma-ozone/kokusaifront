@@ -1,0 +1,101 @@
+@import './sdk/variables';
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap');
+
+/**
+ * 全体
+ */
+* {
+  position: relative;
+}
+
+//SOL add
+body {
+  font-family: Meiryo UI, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+
+  //user agent super
+  margin: 0px;
+}
+
+// body {
+//   font-family: 'Noto Sans JP', 'Avenir', Helvetica, Arial, sans-serif;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+//   color: #2c3e50;
+//   width: 1025px;
+//   // height: 738px;
+//   top: 0px;
+//   left: 0px;
+//   margin: 0;
+//   background: $--body-background-color;
+//   font-size: 12px;
+//   word-wrap: break-word;
+// }
+
+#content {
+  top: 54px;
+  left: 0px;
+}
+
+/**
+ * コンポーネントレベルのCSS
+ */
+p {
+  margin: 2px 0px;
+}
+
+hr {
+  background-color: #fff;
+  border-top: 1px dashed lightgray;
+  margin: 5px 5px;
+}
+
+/**
+ * ナビゲーションガイド
+ */
+.text-bold {
+  background: linear-gradient(transparent 60%, #ffff66 60%);
+  font-weight: bold;
+}
+
+// TODO: コンポーネントで置き換えたので、トライアル画面修正すれば削除してOK
+/**
+ * ラベル・ボックス
+ */
+$--label-margin: 0 5px 0 0;
+
+.label-box-vertical {
+  float: left;
+  margin: $--label-margin;
+  writing-mode: vertical-rl;
+  width: 25px;
+  height: 100%;
+  line-height: 25px;
+  border: 1px;
+  background-color: $--content-theme-color;
+  font-size: 14px;
+  color: white;
+  text-align: center;
+}
+
+.label-form {
+  margin: $--label-margin;
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+  width: 100px;
+  text-align: right;
+  // background-color: lightgray;
+}
+
+.label-half {
+  width: 60px;
+}
+
+/**
+ * ボタン
+ */
+.button-blue {
+  background-color: $--content-theme-color;
+  color: white;
+}

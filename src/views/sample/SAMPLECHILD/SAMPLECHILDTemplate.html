@@ -1,0 +1,48 @@
+<div class="SAMPLECHILD">
+  <ro-message-guide></ro-message-guide>
+
+  <ra-panel title="詳細データ" ref="data">
+    <!-- サンプルID -->
+    <div class="sample_id">
+      <rm-input
+        com-id="sample_id"
+        caption="サンプルID"
+        v-model="bind.bindModel.sample_id"
+        validate="required"
+        input-width="7"
+        :disabled="updateMode && !isLogicYuko"
+      ></rm-input>
+    </div>
+
+    <!-- サンプル名称 -->
+    <div class="sample_nm">
+      <rm-input
+        com-id="sample_nm"
+        caption="サンプル名称"
+        v-model="bind.bindModel.sample_nm"
+        validate="required"
+        input-width="7"
+        :disabled="updateMode && !isLogicYuko"
+      ></rm-input>
+    </div>
+
+    <div class="yuko_flg">
+      <sm-toggle-switch
+      com-id="yuko_flg"
+      caption="有効フラグ"
+      v-model="bind.bindModel.yuko_flg"
+      :disabled="!updateMode"
+      ></sm-toggle-switch>
+    </div>
+  </ra-panel>
+
+  <template>
+      <span v-if="!updateMode">
+        <ra-button class="button" @click="clickInsert" type="success" size="small">登録</ra-button>
+      </span>
+      <span v-else>
+        <ra-button class="button" @click="clickUpdate" type="success" size="small">更新</ra-button>
+      </span>
+      <ra-button class="button" @click="btnBack" type="info" size="small">戻る</ra-button>
+  </template>
+</div>

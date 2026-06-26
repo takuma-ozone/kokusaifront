@@ -1,0 +1,125 @@
+<div class="SSMISSD05">
+  <ro-message-guide></ro-message-guide>
+  <tr>
+    <td>
+      <!-- 出荷人情報パネル -->
+      <ra-panel class="panelRight" title="梱包情報" ref="ref_validate1">
+        入力いただいた数値が請求重量に影響する可能性があります。
+        <br />正しい数値の入力をお願いします。（単位にご注意ください）
+        <br /><br />
+        <ra-button @click="clickProliferation" size="small" type="info">梱包情報追加</ra-button>
+        <br />
+        <!-- 合計値のvalidateを発動させるためにrm-input-read-onlyを用意 -->
+        <rm-input-read-only
+          com-id="sumkosu"
+          labelWidth="2"
+          caption="総個口数"
+          :value="sumkosu"
+          validate="max_value:99"
+        ></rm-input-read-only>
+        総個口数 {{sumkosu}} 個口
+        <!-- 合計値のvalidateを発動させるためにrm-input-read-onlyを用意 -->
+        <rm-input-read-only
+          com-id="sumweight"
+          labelWidth="2"
+          caption="総重量"
+          :value="sumweight"
+          validate="max_value:500"
+        ></rm-input-read-only>
+        総重量 {{sumweight}} kg
+        <div v-for="i in bind_params.panel" :key="i.key">
+          <div
+            class="divMulti"
+            style="padding: 10px; margin-bottom: 10px; border: 1px solid #FFFFFF; border-radius: 10px; background-color: #eef1f5;"
+          >
+            <div>
+              No.{{i.key}}
+            </div>
+            <div>
+              <rm-input
+                :com-id="com('n_packhaisokosu', i)"
+                labelWidth="3"
+                caption="個口数"
+                v-model="bind_params.model[i.key - 1].n_packhaisokosu"
+                validate="required|numeric|max:2|max_value:99"
+                :aria-readonly="areaReadOnly"
+                inputWidth="4"
+                clearable
+              >
+              </rm-input>
+              <rm-input
+                :com-id="com('package_weight', i)"
+                labelWidth="3"
+                inputWidth="4"
+                caption="重量(kg)"
+                v-model="bind_params.model[i.key - 1].package_weight"
+                validate="required|decimal:1|max:5|max_value:999.9"
+                clearable
+              >
+              </rm-input>
+            </div>
+            <div>
+              <rm-input
+                :com-id="com('package_length', i)"
+                labelWidth="3"
+                inputWidth="4"
+                caption="縦(cm)"
+                v-model="bind_params.model[i.key - 1].package_length"
+                validate="required|decimal:1|max:5|max_value:150"
+                clearable
+              >
+              </rm-input>
+              <rm-input
+                :com-id="com('package_width', i)"
+                labelWidth="3"
+                inputWidth="4"
+                caption="横(cm)"
+                v-model="bind_params.model[i.key - 1].package_width"
+                validate="required|decimal:1|max:5|max_value:150"
+                clearable
+              >
+              </rm-input>
+              <rm-input
+                :com-id="com('package_height', i)"
+                labelWidth="3"
+                inputWidth="4"
+                caption="高さ(cm)"
+                v-model="bind_params.model[i.key - 1].package_height"
+                validate="required|decimal:1|max:5|max_value:150"
+                clearable
+              >
+              </rm-input>
+              <!-- 合計値のvalidateを発動させるためにrm-input-read-onlyを用意 -->
+              <rm-input-read-only
+                :com-id="com('sumside', i)"
+                labelWidth="2"
+                caption="3辺の合計"
+                :value="sumside(i.key - 1)"
+                validate="max_value:260"
+              ></rm-input-read-only>
+              3辺の合計 {{sumside(i.key - 1)}} cm
+            </div>
+
+            <div class="bottunRight">
+              <ra-button
+                @click="onClickDelete(i.key - 1)"
+                type="info"
+                size="small"
+                v-if="bind_params.panel.length !== 1"
+                >削除</ra-button
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="bottunRight">
+          <!-- 登録ボタン -->
+          <ra-button @click="onClickRegist" type="warning" size="small">登録</ra-button>
+          <ra-button @click="onClickBack" type="info" size="small">戻る</ra-button>
+        </div>
+      </ra-panel>
+    </td>
+  </tr>
+
+  <router-view></router-view>
+</div>

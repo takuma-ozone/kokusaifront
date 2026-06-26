@@ -1,0 +1,70 @@
+<div class="SSMISRD07">
+  <div class="gridContainer">
+    <el-header id="headerArea" height="50px">
+      <div class="header">
+        <img src="../../../assets/SG_Logo.png" class="image-logo1" />
+        <span class="display-split">|</span>
+        <span class="display-title">{{ this.$route.meta.title }}</span>
+      </div>
+    </el-header>
+    <ro-message-guide id="msgArea"></ro-message-guide>
+
+    <!-- 認証情報入力パネル -->
+    <div id="loginInfoPanel">
+      <ra-panel :title="viewConst.PANEL_TITLE" ref="ref_validate1">
+        <div class="gap1">
+          <rm-input
+            com-id="user_id"
+            :caption="viewConst.USER_ID_CAPTION"
+            labelWidth="14"
+            validate="required"
+            :clearable="true"
+            v-model="bind_params.model.user_id"
+            maxlength="25"
+            labelAlign="left"
+            placeholder="電話番号+数字3桁"
+          >
+          </rm-input>
+        </div>
+        <div class="gap1">
+          <rm-input
+            com-id="haisokokyaku_cd"
+            :caption="viewConst.HAISOKOKYAKU_CD_CAPTION"
+            @blur="dejit"
+            labelWidth="14"
+            validate="required|numeric|length:11,12|kokyakucd"
+            :clearable="true"
+            v-model="bind_params.model.haisokokyaku_cd"
+            maxlength="12"
+            labelAlign="left"
+          >
+          </rm-input>
+        </div>
+        <div class="gap1">
+          <rm-input
+            com-id="moshikomi_id"
+            :caption="viewConst.MOSHIKOMI_ID_CAPTION"
+            labelWidth="14"
+            validate="required|numeric|length:11"
+            :clearable="true"
+            v-model="bind_params.model.moshikomi_id"
+            maxlength="11"
+            labelAlign="left"
+          >
+          </rm-input>
+        </div>
+        <ra-link class="how-to-check-link" type="primary" @click="click_link2" align="left">
+          お客様コード・申込IDのご確認方法はこちら
+        </ra-link>
+      </ra-panel>
+    </div>
+
+    <div id="footerButton">
+      <ra-button @click="onClickNext" type="primary" size="small"
+        >{{viewConst.ONCLICKNEXT_BUTTON_CAPTION}}</ra-button
+      >
+    </div>
+  </div>
+
+  <router-view></router-view>
+</div>

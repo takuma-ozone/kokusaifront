@@ -1,0 +1,232 @@
+<div class="SSMISSD03">
+  <ro-message-guide></ro-message-guide>
+
+  <ra-popup :visible.sync="command.isPopupOpen" title="完了" @close="closePopup" width="800px">
+        &emsp;送り状の発行が完了しました。<br/>
+        &emsp;出力されたものはすべてお荷物に貼付してください。<br />
+        &emsp;必要書類が不足している場合、国際輸送ができません。<br />
+        <el-header id="headerArea" height="260px">
+          <div>
+            <img src="../../../assets/OkuriSuccess.png" width="660px" height="260px">
+          </div>
+        </el-header>
+    <template #footer>
+      <ra-button class="pupup-button" type="primary" @click="closePopup">OK</ra-button>
+    </template>
+  </ra-popup>
+
+  <!-- 送り状検索パネル -->
+  <ra-panel title="送り状検索" ref="ref_validate1">
+    <div>
+      <rm-date-picker-range
+        :value-from.sync="bind_params.search_model.d_hassou_from"
+        :value-to.sync="bind_params.search_model.d_hassou_to"
+        caption="出荷日"
+        com-id="date"
+        validate-from="required"
+        validate-to="required"
+      >
+      </rm-date-picker-range>
+    </div>
+    <div>
+      <sm-select-country
+        com-id="otodoke_country_cd"
+        caption="受取国"
+        v-model="bind_params.search_model.otodoke_country_cd"
+        blankAble
+        filterable
+        clearable
+      >
+      </sm-select-country>
+    </div>
+    <div>
+      <rm-checkbox-group
+        com-id="nohakkou_status"
+        caption="ステータス"
+        v-model="bind_params.search_model.nohakkou_status"
+        label-width="6"
+      >
+        <ra-checkbox size="medium" label="0">正常</ra-checkbox>
+      </rm-checkbox-group>
+      <rm-checkbox-group
+        com-id="err_status"
+        caption=""
+        v-model="bind_params.search_model.err_status"
+        label-width="0"
+      >
+        <ra-checkbox label="1">エラー</ra-checkbox>
+      </rm-checkbox-group>
+      <rm-checkbox-group
+        com-id="save_status"
+        caption=""
+        v-model="bind_params.search_model.save_status"
+        label-width="0"
+      >
+        <ra-checkbox label="2">発行済</ra-checkbox>
+      </rm-checkbox-group>
+    </div>
+    <div>
+      <table class="full-width">
+        <tr>
+          <td>
+            <ra-button @click="onClickSearchReady" type="warning" size="small">検索</ra-button>
+            <ra-button @click="onClickRegist" type="success" size="small">新規登録</ra-button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ra-button @click="onClickCSVmanual" type="primary" size="small">CSV取込マニュアル</ra-button>&nbsp;&nbsp;CSV取込を利用することで、同じ内容を入力する手間が省けます
+          </td>
+          <td class="bottunRight">
+            <ra-button @click="onClickCSV" type="primary" size="mini">CSV出力</ra-button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </ra-panel>
+
+  <ra-panel title="送り状発行検索結果一覧" ref="ref_validate2">
+    <div class="">
+      <!-- ページャ -->
+      <div class="float">
+        <sm-pagination
+          :total="total"
+          :limit.sync="tablePage.pageSize"
+          :page.sync="tablePage.currentPage"
+          @pagination="handlePaging"
+        ></sm-pagination>
+        総計 {{total}} 件 出荷済件数 {{bind_params.hassou_count}} 件
+      </div>
+
+      <!-- テーブル -->
+      <div class="clear">
+        <vxe-table
+          ref="bind_params.search_result_model"
+          height="400"
+          :row-style="rowStyle"
+          :data.sync="tablePage.displayList"
+          :sort-config="{sortMethod: sort}"
+          fixed="left"
+          highlight-current-row
+        >
+          <!-- No -->
+          <vxe-table-column field="no" title="No." width="70" sortable align="right" fixed="left">
+          </vxe-table-column>
+          <!-- 発行ボタン -->
+          <vxe-table-column field="t_shukkairaimeisai_is_seqno" title="" width="240" align="center">
+            <template v-slot="{row}">
+              <table class="buttontable">
+                <tr>
+                  <td>
+                    <ra-button
+                      @click="onClickCreate(row.t_shukkairaimeisai_is_seqno,row.ispack_cd)"
+                      type="primary"
+                      size="mini"
+                      v-if="row.isCreate"
+                      >発行</ra-button
+                    >
+                  </td>
+                  <td class="">
+                    <ra-button @click="onClickUpd(row.no)" :type="row.btnType" size="mini"
+                      >{{row.btnCap}}</ra-button
+                    >
+                  </td>
+                  <td class="">
+                    <ra-button
+                      @click="onClickCopyRegist(row.no)"
+                      type="success"
+                      size="mini"
+                      >複写</ra-button>
+                  </td>
+                  <td class="">
+                    <ra-button
+                      @click="onClickDel(row.t_shukkairaimeisai_is_seqno, row.n_excl_cnt)"
+                      type="info"
+                      size="mini"
+                      v-if="row.isDel"
+                      >削除</ra-button
+                    >
+                  </td>
+                </tr>
+              </table>
+            </template>
+          </vxe-table-column>
+
+          <!-- ステータス -->
+          <vxe-table-column field="status" width="100" title="ステータス"></vxe-table-column>
+          <!-- 出荷日 -->
+          <vxe-table-column field="d_hassou" width="100" title="出荷日" sortable></vxe-table-column>
+          <!-- 受取国 -->
+          <vxe-table-column
+            field="otodoke_country_nm"
+            width="140"
+            title="受取国"
+            sortable
+          ></vxe-table-column>
+
+          <!-- 届先郵便番号 -->
+          <vxe-table-column
+            field="otodoke_yubin"
+            width="140"
+            title="受取郵便番号"
+            sortable
+          ></vxe-table-column>
+          <!-- 届先郵便番号 -->
+          <vxe-table-column
+            field="otodoke_toshi_nm"
+            width="140"
+            title="受取都市名"
+            sortable
+          ></vxe-table-column>
+          <!-- 届先郵便番号 -->
+          <vxe-table-column
+            field="otodoke_add"
+            width="300"
+            title="受取住所"
+            sortable
+          ></vxe-table-column>
+          <vxe-table-column
+            field="otodoke1_nm"
+            width="300"
+            title="受取先会社名"
+            sortable
+          ></vxe-table-column>
+          <vxe-table-column
+            field="otodoke2_nm"
+            width="200"
+            title="受取先氏名"
+            sortable
+          ></vxe-table-column>
+          <!-- 貨物の種類 -->
+          <vxe-table-column field="ispack_cd" width="260" title="種類" sortable></vxe-table-column>
+          <!-- 貨物の内容 -->
+          <vxe-table-column
+            field="ispack_contents"
+            width="300"
+            title="貨物の内容"
+            sortable
+          ></vxe-table-column>
+
+          <!-- 佐川急便問合せ番号 -->
+          <vxe-table-column
+            field="toiawase_no"
+            width="180"
+            title="佐川急便問合せ番号"
+            sortable
+          ></vxe-table-column>
+          <!-- DHLAWB -->
+          <vxe-table-column
+            field="airwaybill_no"
+            width="120"
+            title="WAYBILL"
+            sortable
+          ></vxe-table-column>
+          <!-- インボイス番号 -->
+          <vxe-table-column
+            field="invoice_no"
+            width="160"
+            title="インボイス番号"
+            sortable
+          ></vxe-table-column>
+        </vxe-table>
+      </div>
+    </div>
+  </ra-panel>
+  <router-view></router-view>
+</div>

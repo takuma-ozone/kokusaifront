@@ -1,0 +1,30 @@
+{
+  "at": null,
+  "data": {
+    "taisyoSyuDSijiMotoOption": [],
+    "otdkSkGrpNmOption": [],
+    "svcBetuOption": [
+      {
+        "lblNm": "飛脚特定信書便",
+        "optionTi": 0
+      },
+      {
+        "lblNm": "大口ハンガー便",
+        "optionTi": 1
+      },
+      {
+        "lblNm": "精密機器輸送サービス",
+        "optionTi": 2
+      },
+      {
+        "lblNm": "大型家具家電設置輸送",
+        "optionTi": 3
+      },
+      {
+        "lblNm": "小口ハンガー便",
+        "optionTi": 4
+      }
+    ],
+    "gyomuYmd": "2021/12/14"
+  }
+}

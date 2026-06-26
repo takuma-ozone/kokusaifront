@@ -1,0 +1,59 @@
+@charset "utf-8";
+
+.panelLeft {
+  white-space: nowrap;
+  min-width: 700px;
+}
+
+.panelRight {
+  white-space: nowrap;
+  min-width: 700px;
+}
+
+.panelCenter {
+  white-space: nowrap;
+  max-width: 1400px;
+}
+
+.bottunRight {
+  text-align: right;
+}
+
+.buttonRight {
+  text-align: right;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.dataLeft {
+  white-space: nowrap;
+  min-width: 410px;
+}
+
+.dataRight {
+  white-space: nowrap;
+  min-width: 375px;
+}
+
+.tableSpace {
+  border-collapse: separate;
+}
+
+.messageGuide {
+  background-color: #fbeff5;
+  height: 20px;
+  font-size: 11px;
+  margin-left: 5px;
+  color: #ff0080;
+}
+
+.errorApi {
+  margin: 0 3px;
+  padding: 0 3px;
+}
+
+.pupup-button {
+  width: 4em;
+  height: 1.5em;
+  margin-right: 30px;
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>📗 Vuex | 高速開発FW - APIガイド</title>
+    <meta name="description" content="高速開発FWでの開発を行う上での、コンポーネント・API仕様">
+    <meta name="generator" content="VuePress 1.3.1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/assets/favicon.ico">
+    
+    <link rel="preload" href="/assets/css/0.styles.030a86fc.css" as="style"><link rel="preload" href="/assets/js/app.cf4ddc9f.js" as="script"><link rel="preload" href="/assets/js/3.0d085980.js" as="script"><link rel="preload" href="/assets/js/33.724d7cff.js" as="script"><link rel="prefetch" href="/assets/js/1.080dae05.js"><link rel="prefetch" href="/assets/js/10.2d28dd27.js"><link rel="prefetch" href="/assets/js/11.7210db53.js"><link rel="prefetch" href="/assets/js/12.46bfc883.js"><link rel="prefetch" href="/assets/js/13.370a96b8.js"><link rel="prefetch" href="/assets/js/14.335dab23.js"><link rel="prefetch" href="/assets/js/15.ef3e2fcc.js"><link rel="prefetch" href="/assets/js/16.2e50bd22.js"><link rel="prefetch" href="/assets/js/17.9dfb5d57.js"><link rel="prefetch" href="/assets/js/18.953ab600.js"><link rel="prefetch" href="/assets/js/19.4b50484f.js"><link rel="prefetch" href="/assets/js/20.fdb77932.js"><link rel="prefetch" href="/assets/js/21.1572a835.js"><link rel="prefetch" href="/assets/js/22.96d66e29.js"><link rel="prefetch" href="/assets/js/23.34aab28a.js"><link rel="prefetch" href="/assets/js/24.a4a28fb2.js"><link rel="prefetch" href="/assets/js/25.22baee3b.js"><link rel="prefetch" href="/assets/js/26.a13fa7bd.js"><link rel="prefetch" href="/assets/js/27.dce5b0d8.js"><link rel="prefetch" href="/assets/js/28.91634dc4.js"><link rel="prefetch" href="/assets/js/29.dbd53f96.js"><link rel="prefetch" href="/assets/js/30.51f6d368.js"><link rel="prefetch" href="/assets/js/31.a9e4ebc5.js"><link rel="prefetch" href="/assets/js/32.e5d1c93b.js"><link rel="prefetch" href="/assets/js/34.71e3412e.js"><link rel="prefetch" href="/assets/js/35.e31cb07c.js"><link rel="prefetch" href="/assets/js/36.6b24791f.js"><link rel="prefetch" href="/assets/js/37.2a4240e5.js"><link rel="prefetch" href="/assets/js/38.d86a4e9a.js"><link rel="prefetch" href="/assets/js/39.4d296fda.js"><link rel="prefetch" href="/assets/js/4.f608f9a8.js"><link rel="prefetch" href="/assets/js/40.7add64d4.js"><link rel="prefetch" href="/assets/js/41.94b87ee8.js"><link rel="prefetch" href="/assets/js/42.bdffa45a.js"><link rel="prefetch" href="/assets/js/43.51062795.js"><link rel="prefetch" href="/assets/js/44.4b8332f6.js"><link rel="prefetch" href="/assets/js/5.de39e3fb.js"><link rel="prefetch" href="/assets/js/6.50488601.js"><link rel="prefetch" href="/assets/js/7.21074730.js"><link rel="prefetch" href="/assets/js/8.a5f6e863.js"><link rel="prefetch" href="/assets/js/9.5231cd49.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.030a86fc.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">高速開発FW - APIガイド</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/about/" class="nav-link">
+  About
+</a></div><div class="nav-item"><a href="/frontend/components/" class="nav-link">
+  Components
+</a></div><div class="nav-item"><a href="/frontend/mixins/" class="nav-link">
+  Mixins
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Validations" class="dropdown-title"><span class="title">Validations</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/frontend/validations/index.html" class="nav-link">
+  TOP
+</a></li><li class="dropdown-item"><!----> <a href="/frontend/validations/availableRules.html" class="nav-link">
+  Rules
+</a></li></ul></div></div><div class="nav-item"><a href="/frontend/filters/" class="nav-link">
+  Filters
+</a></div><div class="nav-item"><a href="/frontend/tips/" class="nav-link">
+  Tips
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Libraries" class="dropdown-title"><span class="title">Libraries</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/frontend/library/router.html" class="nav-link">
+  Vue Router
+</a></li><li class="dropdown-item"><!----> <a href="/frontend/library/vuex.html" class="nav-link router-link-exact-active router-link-active">
+  Vuex
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="link" class="dropdown-title"><span class="title">link</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://jp.vuejs.org/v2/guide/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Vue.js
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://element.eleme.io/#/en-US" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Element
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/about/" class="nav-link">
+  About
+</a></div><div class="nav-item"><a href="/frontend/components/" class="nav-link">
+  Components
+</a></div><div class="nav-item"><a href="/frontend/mixins/" class="nav-link">
+  Mixins
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Validations" class="dropdown-title"><span class="title">Validations</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/frontend/validations/index.html" class="nav-link">
+  TOP
+</a></li><li class="dropdown-item"><!----> <a href="/frontend/validations/availableRules.html" class="nav-link">
+  Rules
+</a></li></ul></div></div><div class="nav-item"><a href="/frontend/filters/" class="nav-link">
+  Filters
+</a></div><div class="nav-item"><a href="/frontend/tips/" class="nav-link">
+  Tips
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Libraries" class="dropdown-title"><span class="title">Libraries</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/frontend/library/router.html" class="nav-link">
+  Vue Router
+</a></li><li class="dropdown-item"><!----> <a href="/frontend/library/vuex.html" class="nav-link router-link-exact-active router-link-active">
+  Vuex
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="link" class="dropdown-title"><span class="title">link</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://jp.vuejs.org/v2/guide/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Vue.js
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://element.eleme.io/#/en-US" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Element
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>📗 Vuex</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/frontend/library/vuex.html#vuexとは？" class="sidebar-link">Vuexとは？</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/frontend/library/vuex.html#vuex-の利用方法" class="sidebar-link">Vuex の利用方法</a></li><li class="sidebar-sub-header"><a href="/frontend/library/vuex.html#状態管理パターンとは？" class="sidebar-link">状態管理パターンとは？</a></li></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="vuex"><a href="#vuex" class="header-anchor">#</a> 📗 Vuex</h1> <h2 id="vuexとは？"><a href="#vuexとは？" class="header-anchor">#</a> <a href="https://vuex.vuejs.org/ja/" target="_blank" rel="noopener noreferrer">Vuex<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>とは？</h2> <p><code>Vuex</code>はすべてのコンポーネントでデータを一元管理するための<strong>状態管理パターン + ライブラリ</strong>です。</p> <p><code>Vuex</code>がない環境ではコンポーネント間のデータの受け渡しには、<code>props</code>や<code>$emit</code>を使用して行います。<br>
+しかし、コンポーネント間でのデータ受け渡しが頻繁に行われたり階層が増えてくると<code>props</code>や<code>$emit</code>でのデータ管理が難しくなります。</p> <p>その問題を解決する仕組みが<code>Vuex</code>です。<br> <code>Vuex</code>という一つの入れ物にデータを入れることでどこからでもそのデータへのアクセスが可能になります。</p> <p>新出荷システムにおいては、権限情報などアプリケーション全体で共有されるデータを保持するために<code>Vuex</code>の仕組みを使います。</p> <img src="/rapidVuexGuide.png" alt="VuexAbst"> <ul><li>✅ 予測可能な方法によってのみ状態の変異を行うというルールを保証</li> <li>✅ アプリケーション内の全コンポーネント（＝全画面）のための集中型のストアとして機能</li> <li>✅ Vue 公式の開発ツール拡張と連携し、設定なしでタイムトラベルデバッグやステートのスナップショットなどの高度な機能を提供する</li></ul> <h3 id="vuex-の利用方法"><a href="#vuex-の利用方法" class="header-anchor">#</a> Vuex の利用方法</h3> <p>FW 共通部分で Vuex の<code>state</code>を読み込んでいるため、<br>
+アプリ画面からは通常の<code>data</code>アクセスと同様の方式で記述することができます。</p> <div class="custom-block tip"><p class="custom-block-title">Vuex の`state`へのアクセス</p> <p>例）<code>count</code>という<code>state</code>にアクセスする場合<br>
+※<code>Vuex</code>では、<code>data</code>ではなく<code>state</code>という名前で状態を管理します</p> <div class="language-html line-numbers-mode"><pre class="language-html"><code>{{ count }}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token keyword">this</span><span class="token punctuation">.</span>count<span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></div> <div class="custom-block warning"><p class="custom-block-title">WARNING</p> <p><code>state</code>として何を持つかは FW ではなくアプリ要件によって定まる部分です。<br>
+そのため、一覧については今後アプリチームを含めて検討します。</p></div> <h3 id="状態管理パターンとは？"><a href="#状態管理パターンとは？" class="header-anchor">#</a> 状態管理パターンとは？</h3> <p><code>Vuex</code>では、「予測可能な方法によってのみ状態の変異を行う」というルールを守るため、<br>
+直接<code>state</code>を更新することを禁止しています。</p> <div class="custom-block warning"><p class="custom-block-title">WARNING</p> <p>以下は、<code>Vuex</code>に保持した<code>state</code>を更新する場合の決まり事です。<br>
+アプリ画面から<code>state</code>を更新する機会は多くないため、不要であれば読み飛ばしてください。</p> <p>また、ここから先の説明はアプリ画面記述範囲のみに絞っています。<br> <code>Vuex</code>側の記述も含めて知りたい場合には 🔗 <a href="https://reffect.co.jp/vue/understaind-vue-basic" target="_blank" rel="noopener noreferrer">こちらのページ<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>などを参考にして下さい。</p></div> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token comment">// 以下の書き方はNG</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>$store<span class="token punctuation">.</span>state<span class="token punctuation">.</span>count<span class="token operator">++</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><p>代わりに、<code>mutations</code>という<code>methods</code>によく似た仕組みを使って状態を更新します。<br>
+さらに、<code>mutations</code>は直接実行するのではなく<code>commit</code>を経由して行わなければなりません。</p> <div class="language-vue line-numbers-mode"><pre class="language-vue"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  {{ count }}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>increment<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>++<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+	<span class="token operator">...</span>
+	methods<span class="token operator">:</span> <span class="token punctuation">{</span>
+		<span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">this</span><span class="token punctuation">.</span>$store<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token string">'increment'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br></div></div><p>さらに、非同期処理の中で<code>state</code>を更新したい場合には、<code>actions</code>を利用します。<br> <code>actions</code>は直接<code>state</code>を変更するのではなく、その内部で<code>mutations</code>を<code>commit</code>するように作成します。</p> <p><code>mutations</code>を実行するのは<code>commit</code>でしたが、<code>actions</code>は<code>dispatch</code>メソッドから呼び出されます。</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code>methods<span class="token operator">:</span> <span class="token punctuation">{</span>
+	<span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">this</span><span class="token punctuation">.</span>$store<span class="token punctuation">.</span><span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token string">'increment'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>これらの概念を図にまとめると、以下のようになります。</p> <img src="/rapidVuexDiagram.png" alt="VuexAbst"></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cf4ddc9f.js" defer></script><script src="/assets/js/3.0d085980.js" defer></script><script src="/assets/js/33.724d7cff.js" defer></script>
+  </body>
+</html>

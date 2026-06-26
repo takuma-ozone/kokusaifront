@@ -1,0 +1,33 @@
+<div class="SSMISRD05">
+  <div class="gridContainer">
+    <el-header id="headerArea" height="50px">
+      <div class="header">
+        <img src="../../../assets/SG_Logo.png" class="image-logo1" />
+        <span class="display-split">|</span>
+        <span class="display-title">{{ this.$route.meta.title }}</span>
+      </div>
+    </el-header>
+    <ro-message-guide id="msgArea"></ro-message-guide>
+    <div id="stepArea">
+      <el-steps :active="3" simple style="margin-top: 20px">
+        <el-step :title="viewConst.STEP1_TITLE"></el-step>
+        <el-step :title="viewConst.STEP2_TITLE"></el-step>
+        <el-step :title="viewConst.STEP3_TITLE"></el-step>
+      </el-steps>
+    </div>
+    <!-- パネル -->
+    <div id="completePanel">
+      <ra-panel :title="viewConst.PANEL_TITLE" ref="ref_validate1">
+        登録完了しました。 次へボタンを押下してサービスをご利用ください。
+      </ra-panel>
+    </div>
+
+    <div id="footerButton">
+      <ra-button @click="onClickNext" type="primary" size="small"
+        >{{viewConst.ONCLICKNEXT_BUTTON_CAPTION}}</ra-button
+      >
+    </div>
+  </div>
+
+  <router-view></router-view>
+</div>

@@ -1,0 +1,1103 @@
+<template src="./SSMISSD04Template.html"></template>
+
+<script>
+import SSMISSD04Model from './SSMISSD04Model.js';
+import SSMISSD04Const from './SSMISSD04Const.js';
+import BasePopup from '@/components/BasePopup.vue';
+
+export default {
+  name: 'SSMISSD04',
+  mixins: [BasePopup], // 共通コンポーネントの読み込み
+  inject: ['$validator'],
+
+  //メソッド目次
+  //初期処理・検索関連
+  //基本ボタン(登録・更新)
+  //遷移系ボタン(子画面・次へ前へ・戻る)
+  //その他ボタン・イベント(郵便番号等)
+
+  data() {
+    return SSMISSD04Model;
+  },
+  props: {
+    route_params: {
+      type: Object,
+      default: null,
+    },
+  },
+  mounted() {
+    this.empty();
+    // 親画面からのデータ遷移をセット
+    const propsData = this.$keepTransitionParameter();
+    if (propsData) {
+      this.list_t_shukkairaimeisai_is_seqno =
+        propsData.route_params.list_t_shukkairaimeisai_is_seqno;
+      this.index = propsData.route_params.index;
+      //出荷依頼明細をセット
+      this.bind_params.model.t_shukkairaimeisai_is_seqno = this.list_t_shukkairaimeisai_is_seqno[
+        this.index
+      ];
+      this.search_save_model = propsData.route_params.search_save_model;
+      this.bind_params.seigyo_flg = propsData.route_params.seigyo_flg;
+      this.bind_params.model.errors = propsData.route_params.errors.slice();
+      if (propsData.route_params.copyregist_flg != null) {
+        this.bind_params.copyregist_flg = propsData.route_params.copyregist_flg;
+      }
+    }
+    this.initialize();
+  },
+
+  methods: {
+    /////////////////
+    //初期処理
+    /////////////////
+    async initialize() {
+      // 新規・更新判断
+      if (
+        this.bind_params.model.t_shukkairaimeisai_is_seqno === '' ||
+        this.bind_params.model.t_shukkairaimeisai_is_seqno == null
+      ) {
+        //登録モード
+        this.bind_params.model.updateMode = false;
+        this.$saveSnap('initial');
+        //出荷人デフォルトの取得(同期);
+        const responseShukkanin = await this.$sAccess.select(
+          SSMISSD04Const.SQL_SELECT_IRAIPERSONDEFAULT,
+          this.bind_params.model
+        );
+        //出荷人デフォルト
+        Object.assign(this.bind_params.model.model_shukka, responseShukkanin.data.data[0]);
+        //依頼電話番号
+        this.bind_params.model.model_shukka.irai_tel = this.$sUtilsEx.cutCountryDialCode(
+          this.bind_params.model.model_shukka.irai_tel
+        );
+      } else {
+        //更新モード
+        //インデックスから出荷依頼明細SEQをセット
+        this.bind_params.model.t_shukkairaimeisai_is_seqno = this.list_t_shukkairaimeisai_is_seqno[
+          this.index
+        ];
+        this.bind_params.model.updateMode = true;
+        //検索の実施
+        await this.initSearch();
+        //描画の整理・初期エラーチェックの実施
+        await this.initDisp();
+        //複写登録での遷移だった場合
+        if (this.bind_params.copyregist_flg === '1') {
+          await this.onClickCopyRegist();
+        }
+      }
+      this.visible = true;
+    },
+
+    async initSearch() {
+      //明細の取得
+      const response = await this.$sAccess.select(
+        SSMISSD04Const.SQL_SELECT_MEISAI,
+        this.bind_params.model
+      );
+      //品目の取得(同期)
+      const responseHinmoku = await this.$sAccess.select(
+        SSMISSD04Const.SQL_SELECT_ITEM,
+        this.bind_params.model
+      );
+      //梱包の取得(同期)
+      const responsePack = await this.$sAccess.select(
+        SSMISSD04Const.SQL_SELECT_PACK,
+        this.bind_params.model
+      );
+      //関係者の取得(同期)
+      const responsePerson = await this.$sAccess.select(
+        SSMISSD04Const.SQL_SELECT_PERSON,
+        this.bind_params.model
+      );
+      //取得結果の画面描画
+      //明細
+      Object.assign(this.bind_params.model.model_shukka, response.data.data[0]);
+      //品目
+      this.bind_params.model.search_result_model_hinmoku = responseHinmoku.data.data;
+      //梱包
+      this.bind_params.model.search_result_model_konpou = responsePack.data.data;
+      //関係者
+      this.bind_params.model.search_result_model_kankeisya = responsePerson.data.data;
+
+      //品目-重量
+      this.bind_params.model.netw = this.$sUtilsEx.counterGridWeight(
+        this.bind_params.model.search_result_model_hinmoku,
+        'n_netweight'
+      );
+      //品目-梱包込み重量
+      this.bind_params.model.grossw = this.$sUtilsEx.counterGridWeight(
+        this.bind_params.model.search_result_model_hinmoku,
+        'n_grossweight'
+      );
+      //品目-金額
+      this.bind_params.model.countprice = this.$sUtilsEx.totalGridPrice(
+        this.bind_params.model.search_result_model_hinmoku,
+        'item_price',
+        'item_kosu'
+      );
+      //梱包-総和
+      this.bind_params.model.sumhaisokosu = this.$sUtilsEx.counterGrid(
+        this.bind_params.model.search_result_model_konpou,
+        'n_packhaisokosu'
+      );
+      //梱包-総計
+      this.bind_params.model.sumweight = this.$sUtilsEx.totalGridPackageWeight(
+        this.bind_params.model.search_result_model_konpou,
+        'package_weight',
+        'n_packhaisokosu'
+      );
+      //関係者電話番号
+      for (let i = 0; i < this.bind_params.model.search_result_model_kankeisya.length; i++) {
+        this.bind_params.model.search_result_model_kankeisya[
+          i
+        ].person_tel = this.$sUtilsEx.cutCountryDialCode(
+          this.bind_params.model.search_result_model_kankeisya[i].person_tel
+        );
+      }
+      //届け先電話番号
+      this.bind_params.model.model_shukka.otodoke_tel = this.$sUtilsEx.cutCountryDialCode(
+        this.bind_params.model.model_shukka.otodoke_tel
+      );
+      //依頼電話番号
+      this.bind_params.model.model_shukka.irai_tel = this.$sUtilsEx.cutCountryDialCode(
+        this.bind_params.model.model_shukka.irai_tel
+      );
+      // インボイス通貨表示
+      this.bind_params.model.invoice_cur_text = this.dispCur(
+        this.bind_params.model.model_shukka.invoice_cur
+      );
+    },
+
+    async initDisp() {
+      if (
+        this.bind_params.model.model_shukka.d_okurihakkou !== '' &&
+        this.bind_params.model.model_shukka.d_okurihakkou != null
+      ) {
+        // 分岐1 参照モード 終了
+        this.bind_params.model.readOnlyMode = true;
+        this.$saveSnap('initial');
+      } else {
+        // 分岐1 更新モード 整理
+        //エラーチェックの実行
+        //段階1 画面
+        this.$saveSnap('initial');
+        if (this.bind_params.seigyo_flg === '0') {
+          // 分岐2 各明細画面から更新遷移 OR 出荷一覧画面から編集モードで遷移 OR 本画面で登録更新
+          this.$multipleValidate(async () => {
+            //段階2 API
+            const messagelist = [];
+            const response = await this.$sAccess.callAPI(
+              1,
+              this.bind_params.model.t_shukkairaimeisai_is_seqno
+            );
+            if (response.data.data) {
+              this.bind_params.model.errors = response.data.data;
+              for (const data of response.data.data) {
+                //responseをループして重複しない必要メッセージのみを追加
+                if (
+                  !messagelist.includes(data.message) &&
+                  SSMISSD04Const.APIERROR_MSG_UNNESS !== data.message
+                ) {
+                  messagelist.push(data.message);
+                }
+              }
+              this.bind_params.model.errors = messagelist.sort();
+              // プルダウンデータの整合性チェック
+              await this.initOptionCheck();
+            }
+          });
+        } else {
+          // 分岐2 各明細画面から更新せずに遷移してきたとき
+          this.$multipleValidate(async () => {
+            // プルダウンデータの整合性チェック
+            await this.initOptionCheck();
+          });
+        }
+      }
+    },
+
+    async initOptionCheck() {
+      //お届け先国名(API側でエラーメッセージを返しているため出力処理不要)
+      if (
+        !this.$refs.otodoke_country_cd.selectCheck(
+          this.bind_params.model.model_shukka.otodoke_country_cd,
+          false
+        )
+      ) {
+        this.bind_params.model.model_shukka.otodoke_country_cd = '';
+      }
+      //貿易条件(API側でエラーメッセージを返しているため出力処理不要)
+      if (!this.$refs.incoterms.selectCheck(this.bind_params.model.model_shukka.incoterms, false)) {
+        this.bind_params.model.model_shukka.incoterms = '';
+      }
+      // 輸出目的(API側でエラーメッセージを返しているため出力処理不要)
+      if (this.bind_params.model.model_shukka.ispack_cd === '001') {
+        if (
+          !this.$refs.invoiceexportreason.selectCheck(
+            this.bind_params.model.model_shukka.invoiceexportreason,
+            false
+          )
+        ) {
+          this.bind_params.model.model_shukka.invoiceexportreason = '';
+        }
+      }
+      //インボイス通貨(API側でエラーメッセージを返しているため出力処理不要)
+      if (this.bind_params.model.model_shukka.ispack_cd === '001') {
+        if (
+          !this.$refs.invoice_cur.selectCheck(
+            this.bind_params.model.model_shukka.invoice_cur,
+            false
+          )
+        ) {
+          this.bind_params.model.model_shukka.invoice_cur = '';
+        }
+      }
+      //登録番号(API側でエラーメッセージを返しているため出力処理不要)
+      if (
+        !this.$refs.iraitorokuno1_cd.selectCheck(
+          this.bind_params.model.model_shukka.iraitorokuno1_cd,
+          true
+        )
+      ) {
+        this.bind_params.model.model_shukka.iraitorokuno1_cd = null;
+      }
+      if (
+        !this.$refs.iraitorokuno2_cd.selectCheck(
+          this.bind_params.model.model_shukka.iraitorokuno2_cd,
+          true
+        )
+      ) {
+        this.bind_params.model.model_shukka.iraitorokuno2_cd = null;
+      }
+      if (
+        !this.$refs.iraitorokuno3_cd.selectCheck(
+          this.bind_params.model.model_shukka.iraitorokuno3_cd,
+          true
+        )
+      ) {
+        this.bind_params.model.model_shukka.iraitorokuno3_cd = null;
+      }
+      if (
+        !this.$refs.otodoketorokuno1_cd.selectCheck(
+          this.bind_params.model.model_shukka.otodoketorokuno1_cd,
+          true
+        )
+      ) {
+        this.bind_params.model.model_shukka.otodoketorokuno1_cd = null;
+      }
+      if (
+        !this.$refs.otodoketorokuno2_cd.selectCheck(
+          this.bind_params.model.model_shukka.otodoketorokuno2_cd,
+          true
+        )
+      ) {
+        this.bind_params.model.model_shukka.otodoketorokuno2_cd = null;
+      }
+      if (
+        !this.$refs.otodoketorokuno3_cd.selectCheck(
+          this.bind_params.model.model_shukka.otodoketorokuno3_cd,
+          true
+        )
+      ) {
+        this.bind_params.model.model_shukka.otodoketorokuno3_cd = null;
+      }
+      this.$saveSnap('initial');
+    },
+
+    /////////////////
+    //基本ボタン
+    /////////////////
+    onClickUpdate() {
+      const updateModel = Object.assign({}, this.bind_params.model.model_shukka);
+      updateModel.t_shukkairaimeisai_is_seqno = this.bind_params.model.t_shukkairaimeisai_is_seqno;
+      updateModel.irai_tel_cd = updateModel.irai_country_tel_cd + updateModel.irai_tel;
+      //1.更新モデル生成(TELの接続)
+      updateModel.otodoke_country_tel_cd = this.$sUtilsEx.getCountryDialCode(
+        updateModel.otodoke_country_cd
+      );
+      updateModel.otodoke_tel_cd = updateModel.otodoke_country_tel_cd + updateModel.otodoke_tel;
+      //2.更新モデル生成(現地関税支払い区分の設定)
+      if (updateModel.incoterms === 'DDP') {
+        //DDPのとき荷送人
+        updateModel.kanzeishiharai_cd = '1';
+      } else {
+        //DDP以外のとき荷受人
+        updateModel.kanzeishiharai_cd = '0';
+      }
+      //3.更新モデル生成(貨物の内容の設定)
+      if (updateModel.ispack_cd === '002') {
+        //ドキュメントクーリエのときDOCUMENT
+        updateModel.ispack_contents = 'DOCUMENT';
+      }
+      //4.登録モデル生成(DBアラート防止対策)
+      updateModel.otodoketorokuno1 = this.$sUtilsEx.dbTextLength(updateModel.otodoketorokuno1);
+      updateModel.otodoketorokuno2 = this.$sUtilsEx.dbTextLength(updateModel.otodoketorokuno2);
+      updateModel.otodoketorokuno3 = this.$sUtilsEx.dbTextLength(updateModel.otodoketorokuno3);
+      updateModel.iraitorokuno1 = this.$sUtilsEx.dbTextLength(updateModel.iraitorokuno1);
+      updateModel.iraitorokuno2 = this.$sUtilsEx.dbTextLength(updateModel.iraitorokuno2);
+      updateModel.iraitorokuno3 = this.$sUtilsEx.dbTextLength(updateModel.iraitorokuno3);
+      updateModel.invoice_no = this.$sUtilsEx.dbTextLength(updateModel.invoice_no);
+      updateModel.gaikohoken_kin = this.$sUtilsEx.dbTextLength(updateModel.gaikohoken_kin);
+
+      //実行
+      this.$multipleValidate(async () => {
+        await this.$sUtils.openConfirmDialog('更新', async () => {
+          try {
+            const response = await this.$sUtils.updateWithExclusionControl(
+              updateModel,
+              SSMISSD04Const.PROPSNAMEUPDATE
+            );
+            //更新完了後の再描画
+            this.bind_params.seigyo_flg = '0';
+            this.initialize();
+          } catch (e) {
+            throw e;
+          }
+        });
+      });
+    },
+
+    onClickRegist() {
+      const insertModel = Object.assign({}, this.bind_params.model.model_shukka);
+      insertModel.t_shukkairaimeisai_is_seqno = this.bind_params.model.t_shukkairaimeisai_is_seqno;
+      insertModel.irai_tel_cd = insertModel.irai_country_tel_cd + insertModel.irai_tel;
+      //1.登録モデル生成(TELの接続)
+      insertModel.otodoke_country_tel_cd = this.$sUtilsEx.getCountryDialCode(
+        insertModel.otodoke_country_cd
+      );
+      insertModel.otodoke_tel_cd = insertModel.otodoke_country_tel_cd + insertModel.otodoke_tel;
+      //2.登録モデル生成(現地関税支払い区分の設定)
+      if (insertModel.incoterms === 'DDP') {
+        //DDPのとき荷送人
+        insertModel.kanzeishiharai_cd = '1';
+      } else {
+        //DDP以外のとき荷受人
+        insertModel.kanzeishiharai_cd = '0';
+      }
+      //3.登録モデル生成(貨物の内容の設定)
+      if (insertModel.ispack_cd === '002') {
+        //ドキュメントクーリエのときDOCUMENT
+        insertModel.ispack_contents = 'DOCUMENT';
+      }
+      //4.登録モデル生成(DBアラート防止対策)
+      insertModel.otodoketorokuno1 = this.$sUtilsEx.dbTextLength(insertModel.otodoketorokuno1);
+      insertModel.otodoketorokuno2 = this.$sUtilsEx.dbTextLength(insertModel.otodoketorokuno2);
+      insertModel.otodoketorokuno3 = this.$sUtilsEx.dbTextLength(insertModel.otodoketorokuno3);
+      insertModel.iraitorokuno1 = this.$sUtilsEx.dbTextLength(insertModel.iraitorokuno1);
+      insertModel.iraitorokuno2 = this.$sUtilsEx.dbTextLength(insertModel.iraitorokuno2);
+      insertModel.iraitorokuno3 = this.$sUtilsEx.dbTextLength(insertModel.iraitorokuno3);
+      insertModel.invoice_no = this.$sUtilsEx.dbTextLength(insertModel.invoice_no);
+      insertModel.gaikohoken_kin = this.$sUtilsEx.dbTextLength(insertModel.gaikohoken_kin);
+
+      //実行
+      this.$multipleValidate(async () => {
+        await this.$sUtils.openConfirmDialog('登録', async () => {
+          try {
+            //INS1.依頼
+            const response1 = await this.$sAccess.insertGetSeq(
+              { t_shukkairai_is_seqno: '' },
+              SSMISSD04Const.PROPSNAMESEQINSERT
+            );
+            //INS2.依頼明細
+            insertModel.t_shukkairai_is_seqno = response1.data.data.sequence;
+            const response2 = await this.$sAccess.insertGetSeq(
+              insertModel,
+              SSMISSD04Const.PROPSNAMEINSERT
+            );
+            // 更新モードに遷移するためにinsgetseqの戻り値をリスト等々にセット
+            this.index = 0;
+            this.list_t_shukkairaimeisai_is_seqno[0] = response2.data.data.sequence;
+            this.bind_params.model.t_shukkairaimeisai_is_seqno = this.list_t_shukkairaimeisai_is_seqno[
+              this.index
+            ];
+
+            // 再描画
+            this.bind_params.seigyo_flg = '0';
+            await this.initialize();
+          } catch (e) {
+            throw e;
+          }
+        });
+      });
+    },
+
+    //複写登録ボタン
+    onClickCopyRegist() {
+      const insertModel = Object.assign({}, this.bind_params.model.model_shukka);
+      insertModel.t_shukkairaimeisai_is_seqno = this.bind_params.model.t_shukkairaimeisai_is_seqno;
+      insertModel.irai_tel_cd = insertModel.irai_country_tel_cd + insertModel.irai_tel;
+      //1.登録モデル生成(TELの接続)
+      insertModel.otodoke_country_tel_cd = this.$sUtilsEx.getCountryDialCode(
+        insertModel.otodoke_country_cd
+      );
+      insertModel.otodoke_tel_cd = insertModel.otodoke_country_tel_cd + insertModel.otodoke_tel;
+      //2.登録モデル生成(現地関税支払い区分の設定)
+      if (insertModel.incoterms === 'DDP') {
+        //DDPのとき荷送人
+        insertModel.kanzeishiharai_cd = '1';
+      } else {
+        //DDP以外のとき荷受人
+        insertModel.kanzeishiharai_cd = '0';
+      }
+      //3.登録モデル生成(貨物の内容の設定)
+      if (insertModel.ispack_cd === '002') {
+        //ドキュメントクーリエのときDOCUMENT
+        insertModel.ispack_contents = 'DOCUMENT';
+      }
+      //4.登録モデル生成(DBアラート防止対策)
+      insertModel.otodoketorokuno1 = this.$sUtilsEx.dbTextLength(insertModel.otodoketorokuno1);
+      insertModel.otodoketorokuno2 = this.$sUtilsEx.dbTextLength(insertModel.otodoketorokuno2);
+      insertModel.otodoketorokuno3 = this.$sUtilsEx.dbTextLength(insertModel.otodoketorokuno3);
+      insertModel.iraitorokuno1 = this.$sUtilsEx.dbTextLength(insertModel.iraitorokuno1);
+      insertModel.iraitorokuno2 = this.$sUtilsEx.dbTextLength(insertModel.iraitorokuno2);
+      insertModel.iraitorokuno3 = this.$sUtilsEx.dbTextLength(insertModel.iraitorokuno3);
+      insertModel.invoice_no = this.$sUtilsEx.dbTextLength(insertModel.invoice_no);
+      insertModel.gaikohoken_kin = this.$sUtilsEx.dbTextLength(insertModel.gaikohoken_kin);
+
+      //複写登録のため出荷日を今日に設定
+      const dates = new Date();
+      const todayyear = dates.getFullYear();
+      const todaymonth = ('00' + (dates.getMonth() + 1)).slice(-2);
+      const todaydate = ('00' + dates.getDate()).slice(-2);
+      const dateStrSlash = todayyear + '/' + todaymonth + '/' + todaydate;
+      insertModel.d_hassou = dateStrSlash;
+
+      if (this.bind_params.copyregist_flg === '1') {
+        //一覧画面からの遷移時の実行
+        this.$multipleValidate(async () => {
+          //INS1.依頼
+          const response1 = await this.$sAccess.insertGetSeq(
+            { t_shukkairai_is_seqno: '' },
+            SSMISSD04Const.PROPSNAMESEQINSERT
+          );
+          //INS2.依頼明細
+          insertModel.t_shukkairai_is_seqno = response1.data.data.sequence;
+          const response2 = await this.$sAccess.insertGetSeq(
+            insertModel,
+            SSMISSD04Const.PROPSNAMEINSERT
+          );
+
+          //INS3.梱包(ここからループでinsertModelKonpouの中身の文だけ回す)
+          //for分で回すうえで中身が空なら入らない想定
+          for (let i = 0; i < this.bind_params.model.search_result_model_konpou.length; i++) {
+            //１行分を取得
+            const insertModelKonpou = Object.assign(
+              {},
+              this.bind_params.model.search_result_model_konpou[i]
+            );
+            insertModelKonpou.t_shukkairai_is_seqno = response1.data.data.sequence;
+            insertModelKonpou.t_shukkairaimeisai_is_seqno = response2.data.data.sequence;
+            insertModelKonpou.t_shukkairaipack_is_seqno = null;
+            insertModelKonpou.n_excl_cnt = 0;
+            insertModelKonpou.n_line_id = i + 1;
+
+            await this.$sAccess.insertGetSeq(
+              insertModelKonpou,
+              SSMISSD04Const.PROPSNAMEINSERTKONPOU
+            );
+          }
+
+          //INS4.品目情報(ここからループでinsertModelHinmokuの中身の文だけ回す)
+          //原産国の取得のためにselect
+          const response3 = await this.$sAccess.select(
+            SSMISSD04Const.SQL_SELECT_ITEMCOUNTRY,
+            insertModel
+          );
+          //単位取得の取得のためにselect
+          const response4 = await this.$sAccess.select(SSMISSD04Const.SQL_SELECT_UNIT, insertModel);
+
+          //for分で回すうえで中身が空なら入らない想定
+          for (let i = 0; i < this.bind_params.model.search_result_model_hinmoku.length; i++) {
+            //１行分を取得
+            const insertModelHinmoku = Object.assign(
+              {},
+              this.bind_params.model.search_result_model_hinmoku[i]
+            );
+
+            insertModelHinmoku.t_shukkairai_is_seqno = response1.data.data.sequence;
+            insertModelHinmoku.t_shukkairaimeisai_is_seqno = response2.data.data.sequence;
+            insertModelHinmoku.t_shukkairaiitem_is_seqno = null;
+            insertModelHinmoku.n_excl_cnt = 0;
+            insertModelHinmoku.n_line_id = i + 1;
+            insertModelHinmoku.item_country = response3.data.data[i].country_cd;
+            insertModelHinmoku.item_unit = response4.data.data[i].hanyo1_cd;
+
+            await this.$sAccess.insertGetSeq(
+              insertModelHinmoku,
+              SSMISSD04Const.PROPSNAMEINSERTHINMOKU
+            );
+          }
+
+          //INS5.関係者情報(ここからループでinsertModelKankeisyaの中身の文だけ回す)
+          //国名の取得のためにselect
+          const response5 = await this.$sAccess.select(
+            SSMISSD04Const.SQL_SELECT_PERSONCOUNTRY,
+            insertModel
+          );
+
+          //for分で回すうえで中身が空なら入らない想定
+          for (let i = 0; i < this.bind_params.model.search_result_model_kankeisya.length; i++) {
+            //１行分を取得
+            const insertModelKankeisya = Object.assign(
+              {},
+              this.bind_params.model.search_result_model_kankeisya[i]
+            );
+
+            // //区分値取得のため
+            // const response6 = await this.$sAccess.select(
+            //   SSMISSD04Const.SQL_SELECT_PERSONKBN,
+            //   insertModelKankeisya
+            // );
+
+            insertModelKankeisya.t_shukkairai_is_seqno = response1.data.data.sequence;
+            insertModelKankeisya.t_shukkairaimeisai_is_seqno = response2.data.data.sequence;
+            insertModelKankeisya.t_shukkairaiperson_is_seqno = null;
+            insertModelKankeisya.n_excl_cnt = 0;
+            insertModelKankeisya.n_line_id = i + 1;
+            insertModelKankeisya.person_country_cd = response5.data.data[i].country_cd;
+
+            //person_tel_cdに必要なperson_country_tel_cdをperson_country_cdから取得
+            insertModelKankeisya.person_country_tel_cd = this.$sUtilsEx.getCountryDialCode(
+              insertModelKankeisya.person_country_cd
+            );
+            insertModelKankeisya.person_tel_cd =
+              insertModelKankeisya.person_country_tel_cd + insertModelKankeisya.person_tel;
+
+            await this.$sAccess.insertGetSeq(
+              insertModelKankeisya,
+              SSMISSD04Const.PROPSNAMEINSERTKANKEISYA
+            );
+          }
+
+          // 更新モードに遷移するためにinsgetseqの戻り値をリスト等々にセット
+          this.index = 0;
+          this.list_t_shukkairaimeisai_is_seqno[0] = response2.data.data.sequence;
+          this.bind_params.model.t_shukkairaimeisai_is_seqno = this.list_t_shukkairaimeisai_is_seqno[
+            this.index
+          ];
+
+          // 再描画
+          this.bind_params.seigyo_flg = '0';
+          this.bind_params.copyregist_flg = '0';
+          this.bind_params.model.readOnlyMode = false;
+          await this.initialize();
+          await this.$sUtils.openCompleteDialog('複写登録');
+        });
+      } else {
+        //ボタン時の実行
+        this.$multipleValidate(async () => {
+          await this.$sUtils.openConfirmDialog('複写登録', async () => {
+            try {
+              //INS1.依頼
+              const response1 = await this.$sAccess.insertGetSeq(
+                { t_shukkairai_is_seqno: '' },
+                SSMISSD04Const.PROPSNAMESEQINSERT
+              );
+              //INS2.依頼明細
+              insertModel.t_shukkairai_is_seqno = response1.data.data.sequence;
+              const response2 = await this.$sAccess.insertGetSeq(
+                insertModel,
+                SSMISSD04Const.PROPSNAMEINSERT
+              );
+
+              //INS3.梱包(ここからループでinsertModelKonpouの中身の文だけ回す)
+              //for分で回すうえで中身が空なら入らない想定
+              for (let i = 0; i < this.bind_params.model.search_result_model_konpou.length; i++) {
+                //１行分を取得
+                const insertModelKonpou = Object.assign(
+                  {},
+                  this.bind_params.model.search_result_model_konpou[i]
+                );
+                insertModelKonpou.t_shukkairai_is_seqno = response1.data.data.sequence;
+                insertModelKonpou.t_shukkairaimeisai_is_seqno = response2.data.data.sequence;
+                insertModelKonpou.t_shukkairaipack_is_seqno = null;
+                insertModelKonpou.n_excl_cnt = 0;
+                insertModelKonpou.n_line_id = i + 1;
+
+                await this.$sAccess.insertGetSeq(
+                  insertModelKonpou,
+                  SSMISSD04Const.PROPSNAMEINSERTKONPOU
+                );
+              }
+
+              //INS4.品目情報(ここからループでinsertModelHinmokuの中身の文だけ回す)
+              //原産国の取得のためにselect
+              const response3 = await this.$sAccess.select(
+                SSMISSD04Const.SQL_SELECT_ITEMCOUNTRY,
+                insertModel
+              );
+              //単位取得の取得のためにselect
+              const response4 = await this.$sAccess.select(
+                SSMISSD04Const.SQL_SELECT_UNIT,
+                insertModel
+              );
+
+              //for分で回すうえで中身が空なら入らない想定
+              for (let i = 0; i < this.bind_params.model.search_result_model_hinmoku.length; i++) {
+                //１行分を取得
+                const insertModelHinmoku = Object.assign(
+                  {},
+                  this.bind_params.model.search_result_model_hinmoku[i]
+                );
+
+                insertModelHinmoku.t_shukkairai_is_seqno = response1.data.data.sequence;
+                insertModelHinmoku.t_shukkairaimeisai_is_seqno = response2.data.data.sequence;
+                insertModelHinmoku.t_shukkairaiitem_is_seqno = null;
+                insertModelHinmoku.n_excl_cnt = 0;
+                insertModelHinmoku.n_line_id = i + 1;
+                insertModelHinmoku.item_country = response3.data.data[i].country_cd;
+                insertModelHinmoku.item_unit = response4.data.data[i].hanyo1_cd;
+
+                await this.$sAccess.insertGetSeq(
+                  insertModelHinmoku,
+                  SSMISSD04Const.PROPSNAMEINSERTHINMOKU
+                );
+              }
+
+              //INS5.関係者情報(ここからループでinsertModelKankeisyaの中身の文だけ回す)
+              //国名の取得のためにselect
+              const response5 = await this.$sAccess.select(
+                SSMISSD04Const.SQL_SELECT_PERSONCOUNTRY,
+                insertModel
+              );
+              //for分で回すうえで中身が空なら入らない想定
+              for (
+                let i = 0;
+                i < this.bind_params.model.search_result_model_kankeisya.length;
+                i++
+              ) {
+                //１行分を取得
+                const insertModelKankeisya = Object.assign(
+                  {},
+                  this.bind_params.model.search_result_model_kankeisya[i]
+                );
+
+                // //区分値取得のため
+                // const response6 = await this.$sAccess.select(
+                //   SSMISSD04Const.SQL_SELECT_PERSONKBN,
+                //   insertModelKankeisya
+                // );
+
+                insertModelKankeisya.t_shukkairai_is_seqno = response1.data.data.sequence;
+                insertModelKankeisya.t_shukkairaimeisai_is_seqno = response2.data.data.sequence;
+                insertModelKankeisya.t_shukkairaiperson_is_seqno = null;
+                insertModelKankeisya.n_excl_cnt = 0;
+                insertModelKankeisya.n_line_id = i + 1;
+                insertModelKankeisya.person_country_cd = response5.data.data[i].country_cd;
+
+                //person_tel_cdに必要なperson_country_tel_cdをperson_country_cdから取得
+                insertModelKankeisya.person_country_tel_cd = this.$sUtilsEx.getCountryDialCode(
+                  insertModelKankeisya.person_country_cd
+                );
+                insertModelKankeisya.person_tel_cd =
+                  insertModelKankeisya.person_country_tel_cd + insertModelKankeisya.person_tel;
+
+                await this.$sAccess.insertGetSeq(
+                  insertModelKankeisya,
+                  SSMISSD04Const.PROPSNAMEINSERTKANKEISYA
+                );
+              }
+
+              // 更新モードに遷移するためにinsgetseqの戻り値をリスト等々にセット
+              this.index = 0;
+              this.list_t_shukkairaimeisai_is_seqno[0] = response2.data.data.sequence;
+              this.bind_params.model.t_shukkairaimeisai_is_seqno = this.list_t_shukkairaimeisai_is_seqno[
+                this.index
+              ];
+
+              // 再描画
+              this.bind_params.seigyo_flg = '0';
+              this.bind_params.copyregist_flg = '0';
+              this.bind_params.model.readOnlyMode = false;
+              await this.initialize();
+            } catch (e) {
+              throw e;
+            }
+          });
+        });
+      }
+    },
+
+    /////////////////
+    //遷移
+    /////////////////
+    //子画面3セット
+    async onClickRegistHinmoku() {
+      const param = {
+        list_t_shukkairaimeisai_is_seqno: this.list_t_shukkairaimeisai_is_seqno,
+        index: this.index,
+        search_save_model: this.search_save_model,
+        errors: this.bind_params.model.errors.slice(),
+      };
+      this.$router.push({
+        name: SSMISSD04Const.HINMOKU,
+        params: { route_params: param },
+      });
+    },
+
+    async onClickRegistRelation() {
+      const param = {
+        list_t_shukkairaimeisai_is_seqno: this.list_t_shukkairaimeisai_is_seqno,
+        index: this.index,
+        search_save_model: this.search_save_model,
+        errors: this.bind_params.model.errors.slice(),
+      };
+      this.$router.push({
+        name: SSMISSD04Const.RELATION,
+        params: { route_params: param },
+      });
+    },
+
+    async onClickRegistKonpo() {
+      const param = {
+        list_t_shukkairaimeisai_is_seqno: this.list_t_shukkairaimeisai_is_seqno,
+        index: this.index,
+        search_save_model: this.search_save_model,
+        errors: this.bind_params.model.errors.slice(),
+      };
+      this.$router.push({
+        name: SSMISSD04Const.KONPO,
+        params: { route_params: param },
+      });
+    },
+
+    // 前へ次へボタン
+    async onClickNextPrev(isNext) {
+      //押せないが保険
+      if (this.index >= 0) {
+        //遷移確認ダイアログ
+        if (await this.checkChangeDisp()) {
+          if (isNext) {
+            this.index++;
+          } else {
+            this.index--;
+          }
+          this.empty();
+          this.bind_params.model.t_shukkairaimeisai_is_seqno = this.list_t_shukkairaimeisai_is_seqno[
+            this.index
+          ];
+          this.bind_params.seigyo_flg = '0';
+          this.initialize();
+        } else {
+          // 処理を行わない
+        }
+      }
+    },
+
+    // 戻るボタン&そのお作法
+    async onClickBack() {
+      const param = { search_save_model: this.search_save_model };
+      this.$router.push({
+        name: SSMISSD04Const.ITIRAN,
+        params: { route_params: param },
+      });
+    },
+
+    //遷移確認ダイアログ(次へ前へボタン用)
+    async checkChangeDisp() {
+      let isChange = true;
+      const nowModel = this.bind_params.model.model_shukka;
+      const snapModel = this.$loadSnap('initial').bind_params.model.model_shukka;
+      //保存した初期モデルと現在のモデルが一致するか確認
+      if (!_.isEqual(snapModel, nowModel)) {
+        isChange = await this.$sUtils.confirm(this.$msg(this.$sMsg.SCREENLEAVECONFIRM), '確認', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'info',
+        });
+      }
+      return isChange;
+    },
+
+    //ポップアップ閉じる
+    closePopup() {
+      this.command.isPopupOpen = false;
+    },
+    //ポップアップ開く
+    openPopup() {
+      this.command.isPopupOpen = true;
+    },
+
+    //直接配達ポップアップ閉じる
+    closeDirectPopup() {
+      this.command.isDirectPopupOpen = false;
+    },
+    //直接配達ポップアップ開く
+    openDirectPopup() {
+      this.command.isDirectPopupOpen = true;
+    },
+
+    //英国郵便ポップアップ閉じる
+    closeEikokuPopup() {
+      this.command.isEikokuPopupOpen = false;
+    },
+    //ポップアップ開く
+    openEikokuPopup() {
+      this.command.isEikokuPopupOpen = true;
+    },
+
+    //英国郵便ポップアップ閉じる
+    closeShoruiPopup() {
+      this.command.isShoruiPopupOpen = false;
+    },
+    //書類発送ポップアップ開く
+    openShoruiPopup() {
+      this.command.isShoruiPopupOpen = true;
+    },
+    /////////////////
+    //郵便番号
+    /////////////////
+    async oncliclkirai() {
+      // 参照モードなら処理を行わない
+      if (this.bind_params.model.readOnlyMode) {
+        return;
+      }
+      //モード依頼で実行
+      this.onClickPlus(1);
+    },
+    async oncliclkotodoke() {
+      // 参照モードなら処理を行わない
+      if (this.bind_params.model.readOnlyMode) {
+        return;
+      }
+      //モードお届けで実行
+      this.onClickPlus(0);
+    },
+
+    //リクエスト準備
+    async onClickPlus(isIrai) {
+      const req = { countryCode: '', postalCode: '', cityName: '' };
+      if (isIrai) {
+        //依頼で呼出
+        this.isIrai = true;
+        req.countryCode = this.bind_params.model.model_shukka.irai_country_cd;
+        req.postalCode = this.bind_params.model.model_shukka.irai_yubin;
+        req.cityName = this.bind_params.model.model_shukka.irai_toshi_nm;
+        this.iraiotodokekbn = false;
+        res = await this.organizeAddress(req);
+      } else {
+        //届けで呼出
+        this.isIrai = false;
+        req.countryCode = this.bind_params.model.model_shukka.otodoke_country_cd;
+        req.postalCode = this.bind_params.model.model_shukka.otodoke_yubin;
+        req.cityName = this.bind_params.model.model_shukka.otodoke_toshi_nm;
+        this.iraiotodokekbn = true;
+        res = await this.organizeAddress(req);
+      }
+    },
+
+    //DHL住所のresponseデータを扱う
+    async organizeAddress(req) {
+      //response定義
+      this.$http.post('/service/controller/SsmIssB07', req).then(response => {
+        this.response = response;
+        if (this.response.data.data.rezult_code === '1') {
+          this.$alert(this.$msg(this.$sMsg.HISSERR), 'エラー', {
+            //郵便番号、都市名のどちらかを入力してください
+            type: 'error',
+          });
+          return;
+        } else if (this.response.data.data.rezult_code === '2') {
+          this.$alert(this.$msg(this.$sMsg.COUNTRYERR), 'エラー', {
+            //国名は必須になります
+            type: 'error',
+          });
+          return;
+        } else if (this.response.data.data.rezult_code === '3') {
+          this.$alert(this.$msg(this.$sMsg.NOTEXIST), 'エラー', {
+            //該当の住所は存在しません
+            type: 'error',
+          });
+          return;
+        } else if (this.response.data.data.rezult_code === '4') {
+          this.$alert(this.$msg(this.$sMsg.RIQESTERR), 'エラー', {
+            //リクエストに失敗しました
+            type: 'error',
+          });
+          return;
+        } else if (this.response.data.data.address.length === 1) {
+          const resaddress = { countryCode: '', postalCode: '', cityName: '' };
+          resaddress.countryCode = this.response.data.data.address[0].countryCode;
+          resaddress.postalCode = this.response.data.data.address[0].postalCode;
+          resaddress.cityName = this.response.data.data.address[0].cityName;
+          this.setAddress(resaddress);
+        } else {
+          this.bind_params.result_model.grid_result_set = this.response.data.data.address;
+          this.yubinVisible = true;
+        }
+      });
+    },
+
+    //resを画面にセット
+    async setAddress(res) {
+      if (this.isIrai) {
+        this.bind_params.model.model_shukka.irai_country_cd = res.countryCode;
+        this.bind_params.model.model_shukka.irai_yubin = res.postalCode;
+        this.bind_params.model.model_shukka.irai_toshi_nm = res.cityName;
+      } else {
+        this.bind_params.model.model_shukka.otodoke_country_cd = res.countryCode;
+        this.bind_params.model.model_shukka.otodoke_yubin = res.postalCode;
+        this.bind_params.model.model_shukka.otodoke_toshi_nm = res.cityName;
+      }
+    },
+    //so-window向けイベント2種
+    onClickPlusResult(result) {
+      this.setAddress(result);
+    },
+    onClickPlusClosed() {
+      this.yubinVisible = false;
+    },
+
+    /////////////////
+    //その他
+    /////////////////
+    // 貨物の内容の制御を行う
+    async ispackContentsDoc() {
+      this.bind_params.model.model_shukka.ispack_contents = 'DOCUMENT';
+    },
+
+    /////////////////
+    //インボイス通貨表示制御
+    /////////////////
+    dispCur(cur) {
+      const curText = '-';
+      let flg = false;
+      const curArray = [
+        'JPY',
+        'USD',
+        'EUR',
+        'GBP',
+        'CNY',
+        'AUD',
+        'CAD',
+        'CHF',
+        'HKD',
+        'SGD',
+        'INR',
+        'KRW',
+        'THB',
+        'TWD',
+        'VND',
+      ];
+      if (cur == null) {
+        return curText;
+      } else {
+        for (let i = 0; i < curArray.length; i++) {
+          if (cur === curArray[i]) {
+            flg = true;
+            break;
+          }
+        }
+      }
+      if (flg === true) {
+        return cur;
+      } else {
+        return curText;
+      }
+    },
+  },
+
+  async beforeRouteLeave(to, from, next) {
+    let result = true;
+    const nowModel = this.bind_params.model.model_shukka;
+    const snapModel = this.$loadSnap('initial').bind_params.model.model_shukka;
+    //保存した初期モデルと現在のモデルが一致するか確認
+    if (!_.isEqual(snapModel, nowModel)) {
+      result = await this.$sUtils.confirm(this.$msg(this.$sMsg.SCREENLEAVECONFIRM), '確認', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'info',
+      });
+    }
+    if (result) {
+      this.empty();
+      next();
+    } else {
+      next(false);
+    }
+  },
+
+  computed: {
+    // グリッドのデータ数の総計をカウントする。
+    totalHinmoku() {
+      return this.bind_params.model.search_result_model_hinmoku.length;
+    },
+    totalKonpo() {
+      return this.bind_params.model.search_result_model_konpou.length;
+    },
+    lengZero() {
+      if (this.index < 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    lengMax() {
+      if (this.index >= this.list_t_shukkairaimeisai_is_seqno.length - 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    valiCheckContents() {
+      let required;
+      if (this.bind_params.model.model_shukka.ispack_cd === '002') {
+        required = 'max:70';
+      } else {
+        required = 'required|max:70|alpha_num_symbol';
+      }
+      return required;
+    },
+    disCheckContents() {
+      if (this.bind_params.model.model_shukka.ispack_cd === '002') {
+        this.ispackContentsDoc();
+        return true;
+      } else {
+        return false;
+      }
+    },
+    disCheckOther() {
+      //登録番号または登録コードの活性非活性制御
+      //番号は当該当該
+      return function(value, value2) {
+        if ((value === '' || value === null) && (value2 === '' || value2 === null)) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+    },
+    valiCheckTorokuNo() {
+      //登録番号⇒引数のタイプがnullでなければ必須、最大35、半角英数
+      return function(value) {
+        if (value === '' || value === null) {
+          return null;
+        } else {
+          return 'required|max:35|alpha_num';
+        }
+      };
+    },
+
+    valiCheckTorokuNoKbn() {
+      //登録タイプ⇒引数がnullでなければ必須
+      return function(value) {
+        if (value === '' || value === null) {
+          return null;
+        } else {
+          return 'alpha_num';
+        }
+      };
+    },
+    getTelCode() {
+      const result = this.$sUtilsEx.getCountryDialCode(
+        this.bind_params.model.model_shukka.otodoke_country_cd
+      );
+      return result;
+    },
+  },
+};
+</script>
+
+<style lang="scss" src="./SSMISSD04Style.scss" scoped></style>

@@ -1,0 +1,10 @@
+{
+  "at": null,
+  "data": {
+    "cl.def.date.format.system": "yyyyMMdd",
+    "cl.def.time.format.system": "yyyyMMddHHmmssSSS",
+    "cl.def.csrf.token": "RDEV-CSRF-Token",
+    "cl.def.time.format.screen": "yyyy/MM/dd HH:mm:ss.SSS",
+    "cl.def.date.format.screen": "yyyy/MM/dd"
+  }
+}

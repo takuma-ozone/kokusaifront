@@ -1,0 +1,158 @@
+/***************************************************
+ * Element UIのscss変数を上書き
+ * https://github.com/ElemeFE/element/blob/dev/packages/theme-chalk/src/common/var.scss
+ ***************************************************/
+
+/* theme color */
+$--color-primary: deepskyblue;
+$--color-text-regular: #333333;
+$--color-white: white;
+$--color-lightgrey: lightgrey;
+$--color-gray: #a4a4a4;
+
+$--color-primary: deepskyblue;
+$--color-info: gray;
+$--color-warning: royalblue;
+$--color-success: #020b8f;
+$--color-text-regular: #333333;
+$--color-white: white;
+$--color-lightgrey: lightgrey;
+$--color-gray: #a4a4a4;
+
+// sol add
+// $--color-primary: white;
+// $--color-text-regular: grey;
+// $--color-white: white;
+// $--color-lightgrey: grey;
+// $--color-gray: grey;
+
+/* font */
+$--font-size-base: 12px;
+
+/* el-input */
+$--input-mini-height: 18px;
+/* el-button */
+$--button-mini-font-size: 12pt;
+$--button-mini-padding-vertical: 2px;
+$--button-mini-padding-horizontal: 5px;
+$--button-small-font-size: 12pt;
+$--button-small-padding-vertical: 5px;
+$--button-small-padding-horizontal: 8px;
+/* el-radio */
+
+/* el-menu */
+$--el-menu-height: 24px;
+
+/* icon font path, required */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+@import '~element-ui/packages/theme-chalk/src/index';
+
+/* vxe-table */
+/* https://github.com/xuliangzhan/vxe-table/blob/master/styles/variable.scss */
+@import 'vxe-table/styles/variable.scss';
+$vxe-font-family: 'Noto Sans JP', 'Avenir', Helvetica, Arial, sans-serif;
+$vxe-font-size: 14px;
+$vxe-table-row-height-default: 36px;
+$vxe-toolbar-height-default: 46px;
+$vxe-checkbox-font-size-default: 14px;
+$vxe-button-height-default: 28px;
+$vxe-input-date-title-height-default: 26px;
+$vxe-input-date-time-week-row-height-default: 32px;
+$vxe-input-date-month-year-row-height-default: 42px;
+$vxe-input-date-quarter-row-height-default: 54px;
+$vxe-form-item-min-height-default: 30px;
+$vxe-select-option-height-default: 24px;
+@import 'vxe-table/styles/default.scss';
+
+/***************************************************
+ * ここにscssを記述すればElement-uiのスタイルを編集できる
+ ***************************************************/
+@import './variables';
+
+/**
+ * el-input
+ */
+.el-input__inner {
+  padding: 0 8px; // インプットフィールドの左右幅を調整
+}
+
+.el-input .el-input__count {
+  font-size: 10px; // インプットカウントのサイズを調整
+}
+
+.el-input-group {
+  line-height: 16px; // input-slotの縦幅を調整
+}
+
+.el-input-group__append,
+.el-input-group__prepend {
+  padding: 0 10px; // input-slotの左右幅を調整
+}
+
+.el-radio {
+  margin-right: 10px; // radioの間隔を調整
+  vertical-align: bottom;
+}
+
+.el-checkbox__label {
+  padding-left: 5px;
+  line-height: 20px;
+  font-size: 11px;
+}
+
+.el-radio__label {
+  padding-left: 3px;
+}
+
+/**
+ * el-menu
+ */
+// .el-menu {
+//   height: $--el-menu-height;
+// }
+
+// .el-menu-item {
+//   height: $--el-menu-height !important;
+//   line-height: $--el-menu-height !important;
+// }
+
+// .el-submenu .el-submenu__title {
+//   height: $--el-menu-height !important;
+//   line-height: $--el-menu-height !important;
+// }
+
+// .el-menu--popup-bottom-start {
+//   margin-top: 1px;
+// }
+
+/**
+ * vxe-table
+ */
+.vxe-table.size--mini {
+  font-size: 11px; // テーブルのフォントサイズを11pxに
+}
+
+.vxe-table.size--mini .vxe-header--column:not(.col--ellipsis),
+.vxe-table.size--mini .vxe-body--column:not(.col--ellipsis),
+.vxe-table.size--mini .vxe-footer--column:not(.col--ellipsis) {
+  padding: 3px 0; // ヘッダーの上下余白を狭める
+}
+
+.vxe-table.vxe-editable.size--mini .vxe-body--column,
+.vxe-table.size--mini .vxe-header--column.col--ellipsis,
+.vxe-table.size--mini .vxe-body--column.col--ellipsis,
+.vxe-table.size--mini .vxe-footer--column.col--ellipsis {
+  height: 28px; // テーブルセルの上下幅を狭める
+}
+
+.vxe-toolbar {
+  padding: 0 0;
+}
+
+//sol add
+.el-card__header {
+  padding: 10px 20px 5px !important;
+}
+.el-card__body {
+  padding: 0 20px !important;
+}

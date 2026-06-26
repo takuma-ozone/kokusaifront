@@ -1,0 +1,44 @@
+/**
+ *************************************************************************************
+ * Copyright(C) 1999- Sagawa Express Co.,Ltd. All rights reserved.
+ * Copyright(C) 2010- SG SYSTEMS Co.,Ltd. All rights reserved.
+ * Copyright(C) 2019 by Future Architect, Inc. Japan
+ * 画面ID: NSISDP01-D01
+ * 画面名: 荷物受渡書印刷
+ * 作成者: XXX
+ * 更新履歴：
+ * 更新日付		更新者		更新内容
+ * 201X/XX/XX	XXX			設計書-新規作成
+ *
+ *************************************************************************************
+ */
+import SAMPLECHILDConst from './SAMPLECHILDConst.js';
+
+export default {
+  //動作モード
+  updateMode: true,
+
+  SAMPLECHILDConst: SAMPLECHILDConst,
+
+  bind: {
+    bindModel: {
+      m_sample_seqno: '',
+      sample_id: '',
+      sample_nm: '',
+      n_excl_cnt: 0,
+      yuko_flg: true,
+    },
+  },
+
+  empty() {
+    this.bind = {
+      bindModel: {
+        m_sample_seqno: '',
+        sample_id: '',
+        sample_nm: '',
+        n_excl_cnt: 0,
+        yuko_flg: true,
+      },
+    }
+  }
+};

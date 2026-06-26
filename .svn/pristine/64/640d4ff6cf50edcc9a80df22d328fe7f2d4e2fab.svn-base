@@ -1,0 +1,834 @@
+{
+  "code": 0,
+  "data": [
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 1,
+      "value": "admin",
+      "label": "管理料金"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 2,
+      "value": "delivery",
+      "label": "配送料金"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 3,
+      "value": "documentation",
+      "label": "ドキュメント料金"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 4,
+      "value": "expedite",
+      "label": "迅速料金"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 5,
+      "value": "freight",
+      "label": "運賃"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 6,
+      "value": "fuel surcharge",
+      "label": "燃油サーチャージ"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 7,
+      "value": "logistic",
+      "label": "ロジスティックサーチャージ"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 8,
+      "value": "other",
+      "label": "その他のチャージ"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 9,
+      "value": "packaging",
+      "label": "パッケージングチャージ"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 10,
+      "value": "pickup",
+      "label": "ピックアップチャージ"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 11,
+      "value": "handling",
+      "label": "ハンドリングチャージ"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 12,
+      "value": "vat",
+      "label": "VATチャージ"
+    },
+    {
+      "group": "addcharge_kbn",
+      "n_line_id": 13,
+      "value": "insurance",
+      "label": "保険費用"
+    },
+    {
+      "group": "dangeritem_cmb",
+      "n_line_id": 1,
+      "value": "000",
+      "label": "危険品無し"
+    },
+    {
+      "group": "dangeritem_cmb",
+      "n_line_id": 2,
+      "value": "001",
+      "label": "LITHIUM ION PI965 SECTION II"
+    },
+    {
+      "group": "dangeritem_cmb",
+      "n_line_id": 3,
+      "value": "002",
+      "label": "LITHIUM ION PI966 SECTION II"
+    },
+    {
+      "group": "dangeritem_cmb",
+      "n_line_id": 4,
+      "value": "003",
+      "label": "LITHIUM METAL PI969 SECTION II"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 1,
+      "value": "permanent",
+      "label": "Permanent（通常輸出）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 2,
+      "value": "sample",
+      "label": "Sample（見本品として輸出）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 3,
+      "value": "gift",
+      "label": "Gift（贈答品として輸出）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 4,
+      "value": "intercompany_use",
+      "label": "Intercompany Use（事業所間で使用する貨物を輸出）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 5,
+      "value": "commercial_purpose_or_sale",
+      "label": "Commercial Purposes/Sale（売買目的/販売目的で輸出）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 6,
+      "value": "temporary",
+      "label": "Temporary（再輸入を予定した一時的な輸出）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 7,
+      "value": "return",
+      "label": "Return for Repair（故障品を修理目的で再輸出）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 8,
+      "value": "used_exhibition_goods_to_origin",
+      "label": "Used Exhibition Goods to Origin（展示会の目的で一時輸入したものを再輸出）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 9,
+      "value": "return_to_origin",
+      "label": "Return to Origin（海外から輸入した貨物を再輸出）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 10,
+      "value": "warranty_replacement",
+      "label": "Warranty Replacement（海外から輸入したものを保証期間中に返品）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 11,
+      "value": "personal_belongings_or_personal_use",
+      "label": "Personal Belongings/Not for Resale（輸出者個人の所有物/販売しない目的で輸出）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 12,
+      "value": "diplomatic_goods",
+      "label": "Diplomatic Goods（外交官の貨物を輸出）"
+    },
+    {
+      "group": "exportreason_cmb",
+      "n_line_id": 13,
+      "value": "defence_material",
+      "label": "Defense Material（防衛にかかわる貨物を輸出）"
+    },
+    {
+      "group": "incoterm_cmb",
+      "n_line_id": 1,
+      "value": "EXW",
+      "label": "EXW（工場渡し）"
+    },
+    {
+      "group": "incoterm_cmb",
+      "n_line_id": 2,
+      "value": "FCA",
+      "label": "FCA（運送人渡し）"
+    },
+    {
+      "group": "incoterm_cmb",
+      "n_line_id": 3,
+      "value": "CPT",
+      "label": "CPT（運送費込み）"
+    },
+    {
+      "group": "incoterm_cmb",
+      "n_line_id": 4,
+      "value": "CIP",
+      "label": "CIP（運送費保険料込み）"
+    },
+    {
+      "group": "incoterm_cmb",
+      "n_line_id": 5,
+      "value": "DAP",
+      "label": "DAP（仕向地持込渡し）"
+    },
+    {
+      "group": "incoterm_cmb",
+      "n_line_id": 6,
+      "value": "DPU",
+      "label": "DPU（荷下込持込渡し）"
+    },
+    {
+      "group": "incoterm_cmb",
+      "n_line_id": 7,
+      "value": "DDP",
+      "label": "DDP（仕向地持込み渡し関税込み）"
+    },
+    {
+      "group": "incoterm_cmb",
+      "n_line_id": 8,
+      "value": "FAS",
+      "label": "FAS（船側渡し）"
+    },
+    {
+      "group": "incoterm_cmb",
+      "n_line_id": 9,
+      "value": "FOB",
+      "label": "FOB（本船渡し）"
+    },
+    {
+      "group": "incoterm_cmb",
+      "n_line_id": 10,
+      "value": "CFR",
+      "label": "CFR（運賃込み）"
+    },
+    {
+      "group": "incoterm_cmb",
+      "n_line_id": 11,
+      "value": "CIF",
+      "label": "CIF（運賃保険料込み）"
+    },
+    {
+      "group": "invoice_type_kbn",
+      "n_line_id": 10,
+      "value": "000",
+      "label": "作成しない"
+    },
+    {
+      "group": "invoice_type_kbn",
+      "n_line_id": 20,
+      "value": "001",
+      "label": "作成する"
+    },
+    {
+      "group": "is_doc_kbn",
+      "n_line_id": 10,
+      "value": "001",
+      "label": "スモールパーセル(ビジネス小荷物)"
+    },
+    {
+      "group": "is_doc_kbn",
+      "n_line_id": 20,
+      "value": "002",
+      "label": "ドキュメントクーリエ(ビジネス書類)"
+    },
+    {
+      "group": "is_doc_kbn_csv",
+      "n_line_id": 1,
+      "value": "001",
+      "label": "スモールパーセル"
+    },
+    {
+      "group": "is_doc_kbn_csv",
+      "n_line_id": 2,
+      "value": "002",
+      "label": "ドキュメントクーリエ"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 1,
+      "value": "PCS",
+      "label": "Pieces"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 2,
+      "value": "BOX",
+      "label": "Boxes"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 3,
+      "value": "M",
+      "label": "Meters"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 4,
+      "value": "KG",
+      "label": "Kilograms"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 5,
+      "value": "2GM",
+      "label": "Centigram"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 6,
+      "value": "2M",
+      "label": "Centimeters"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 7,
+      "value": "2M3",
+      "label": "CubicCentimeters"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 8,
+      "value": "3M3",
+      "label": "CubicFeet"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 9,
+      "value": "M3",
+      "label": "CubicMeters"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 10,
+      "value": "DPR",
+      "label": "DozenPairs"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 11,
+      "value": "DOZ",
+      "label": "Dozen"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 12,
+      "value": "2NO",
+      "label": "Each"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 13,
+      "value": "GM",
+      "label": "Grams"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 14,
+      "value": "GRS",
+      "label": "Gross"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 15,
+      "value": "L",
+      "label": "Liters"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 16,
+      "value": "3GM",
+      "label": "Milligrams"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 17,
+      "value": "3L",
+      "label": "Milliliters"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 18,
+      "value": "X",
+      "label": "NoUnitRequired"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 19,
+      "value": "NO",
+      "label": "Number"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 20,
+      "value": "2KG",
+      "label": "Ounces"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 21,
+      "value": "PRS",
+      "label": "Pairs"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 22,
+      "value": "2L",
+      "label": "Gallons"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 23,
+      "value": "3KG",
+      "label": "Pounds"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 24,
+      "value": "CM2",
+      "label": "SquareCentimeters"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 25,
+      "value": "2M2",
+      "label": "SquareFeet"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 26,
+      "value": "3M2",
+      "label": "SquareInches"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 27,
+      "value": "M2",
+      "label": "SquareMeters"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 28,
+      "value": "4M2",
+      "label": "SquareYards"
+    },
+    {
+      "group": "itemunit_cmb",
+      "n_line_id": 29,
+      "value": "3M",
+      "label": "Yards"
+    },
+    {
+      "group": "kanzeishiharai_cmb",
+      "n_line_id": 1,
+      "value": "0",
+      "label": "荷受人様（Consignee）支払"
+    },
+    {
+      "group": "kanzeishiharai_cmb",
+      "n_line_id": 2,
+      "value": "1",
+      "label": "荷送人様（Shipper）支払"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 10,
+      "value": "E-C01",
+      "label": "取込CSVファイルの内容がありません。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 20,
+      "value": "E-C02",
+      "label": "CSV以外のファイルは取り込めません。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 30,
+      "value": "E-C03",
+      "label": "取込CSVファイルは文字コードをSJISに設定してください。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 40,
+      "value": "E-C04",
+      "label": "取込CSVファイルが規定行数を超過しています。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 50,
+      "value": "E-C05",
+      "label": "取込CSVファイルがカンマ区切りではありません。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 60,
+      "value": "E-C06",
+      "label": "項目数が行によって異なるため取り込めません。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 70,
+      "value": "E-F01",
+      "label": "無効なマッピング設定が指定されています。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 80,
+      "value": "E-F02",
+      "label": "取込CSVファイルのヘッダー行が、出荷CSV取込レイアウトと一致していません。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 90,
+      "value": "E-F03",
+      "label": "取込CSVファイルのヘッダー行に重複があります。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 100,
+      "value": "E-F04",
+      "label": "取込CSVファイルの項目文字数は255文字以内にしてください。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 110,
+      "value": "E-B01",
+      "label": "取込CSVファイルのヘッダー行が既定と異なります。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 120,
+      "value": "E-B02",
+      "label": "取込CSVファイル内に既定と型が違う項目があります。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 130,
+      "value": "E-B03",
+      "label": "取込CSVファイル内に既定と桁が違う項目があります。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 140,
+      "value": "E-B04",
+      "label": "取込CSVファイル内で郵便番号の重複があります。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 150,
+      "value": "E-B05",
+      "label": "取込CSVファイル内で郵便番号かJISコードに欠けがあります。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 160,
+      "value": "S-C01",
+      "label": "取込が完了しました。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 170,
+      "value": "N-C01",
+      "label": "取込中です。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 180,
+      "value": "C-B01",
+      "label": "仕分けマスタへの反映が完了しました。"
+    },
+    {
+      "group": "msg_import",
+      "n_line_id": 190,
+      "value": "P-B01",
+      "label": "仕分けマスタへの反映対象外です。"
+    },
+    {
+      "group": "person_cmb",
+      "n_line_id": 10,
+      "value": "01",
+      "label": "買主"
+    },
+    {
+      "group": "person_cmb",
+      "n_line_id": 20,
+      "value": "02",
+      "label": "売主"
+    },
+    {
+      "group": "person_cmb",
+      "n_line_id": 30,
+      "value": "03",
+      "label": "輸入者"
+    },
+    {
+      "group": "person_cmb",
+      "n_line_id": 40,
+      "value": "04",
+      "label": "輸出者"
+    },
+    {
+      "group": "person_cmb",
+      "n_line_id": 50,
+      "value": "05",
+      "label": "支払い者"
+    },
+    {
+      "group": "status_import",
+      "n_line_id": 1,
+      "value": "E",
+      "label": "取込失敗"
+    },
+    {
+      "group": "status_import",
+      "n_line_id": 2,
+      "value": "P",
+      "label": "反映対象外"
+    },
+    {
+      "group": "status_import",
+      "n_line_id": 3,
+      "value": "C",
+      "label": "反映済"
+    },
+    {
+      "group": "status_import",
+      "n_line_id": 4,
+      "value": "S",
+      "label": "取込完了"
+    },
+    {
+      "group": "status_import",
+      "n_line_id": 5,
+      "value": "N",
+      "label": "取込中"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 1,
+      "value": "VAT",
+      "label": "VAT, Value-Added tax"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 2,
+      "value": "EIN",
+      "label": "EIN, Employer Identifiaction Number"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 3,
+      "value": "GST",
+      "label": "GST,Goods and Service Tax"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 4,
+      "value": "SSN",
+      "label": "SSN, Social Secutiry Number"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 5,
+      "value": "EOR",
+      "label": "EOR,European Union Registration and Identification"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 6,
+      "value": "DUN",
+      "label": "DUN, Data Universal Numberin System"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 7,
+      "value": "FED",
+      "label": "FED, Federal Tax ID"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 8,
+      "value": "STA",
+      "label": "STA, State Tax ID"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 9,
+      "value": "CNP",
+      "label": "CNP, Brazil CNPJ/CPF Federal Tax"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 10,
+      "value": "IE",
+      "label": "IE, Brazil type IE/RG Federal Tax"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 11,
+      "value": "INN",
+      "label": "INN, Russia bank details section - INN"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 12,
+      "value": "KPP",
+      "label": "KPP, Russia bank details section - KPP"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 13,
+      "value": "OGR",
+      "label": "OGR, Russia bank details section -OGRN"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 14,
+      "value": "OKP",
+      "label": "OKP, Russia bank details section - OKPO"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 15,
+      "value": "MRN",
+      "label": "MRN, Germany Movement Reference Number"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 16,
+      "value": "SDT",
+      "label": "SDT, Overseas Registered Supplier or AUSid GST Registration or VAT on E-Commerce"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 17,
+      "value": "FTZ",
+      "label": "FTZ, Free Trade Zone ID"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 18,
+      "value": "DAN",
+      "label": "DAN, Deferment Account Duties Only"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 19,
+      "value": "TAN",
+      "label": "TAN, Deferment Account Tax Only"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 20,
+      "value": "DTF",
+      "label": "DTF, Deferment Account Duties, Taxes and Fees Only"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 21,
+      "value": "RGP",
+      "label": "RGP, EU Registered Exporters registration ID"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 22,
+      "value": "DLI",
+      "label": "DLI, Drivers License "
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 23,
+      "value": "NID",
+      "label": "NID, National Identity Card"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 24,
+      "value": "PAS",
+      "label": "PAS, Passport"
+    },
+    {
+      "group": "torokutype_cmb",
+      "n_line_id": 25,
+      "value": "MID",
+      "label": "MID, Manufacturer ID"
+    },
+    {
+      "group": "waribiki_tariff",
+      "n_line_id": 1,
+      "value": "00",
+      "label": "waritari0"
+    },
+    {
+      "group": "waribiki_tariff",
+      "n_line_id": 2,
+      "value": "01",
+      "label": "waritari1"
+    },
+    {
+      "group": "waribiki_tariff",
+      "n_line_id": 3,
+      "value": "02",
+      "label": "waritari2"
+    },
+    {
+      "group": "waribiki_tariff",
+      "n_line_id": 4,
+      "value": "03",
+      "label": "waritari3"
+    },
+    {
+      "group": "waribiki_tariff",
+      "n_line_id": 5,
+      "value": "04",
+      "label": "waritari4"
+    },
+    {
+      "group": "PROCMODE",
+      "n_line_id": 1,
+      "value": "0",
+      "label": "チェックのみ"
+    },
+    { "group": "PROCMODE", "n_line_id": 2, "value": "1", "label": "実行" }
+  ]
+}

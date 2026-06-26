@@ -1,0 +1,10 @@
+export default {
+  ROUTE_SSMISSD04: 'SSMISSD04',
+  SQL_SELECT: 'SSMISSD06.t_shukkairaiitem_is.select',
+  MEISAI_SELECT: 'SSMISSD06.t_shukkairaimeisai_is.select',
+  PROPSNAMEINSERT: 'SSMISSD06_INSERT',
+  PROPSNAMEUPDATE: 'SSMISSD06_UPDATE',
+  PROPSNAMEUPDFORDEL: 'SSMISSD06_UPDATEFORDEL',
+  TABLE_INSERT:'t_shukkairaiitem_is',
+  COLUMN_EXCLCNT: 'n_excl_cnt',
+};

@@ -1,0 +1,1126 @@
+<div class="SSMISSD04">
+  <ro-message-guide></ro-message-guide>
+
+  <!--危険品ポップアップ-->
+    <ra-popup :visible.sync="command.isPopupOpen" title="-航空搭載できない主な危険品" @close="closePopup" width="800px">
+      <div>
+        &emsp;下記の品物については、飛脚国際宅配便としてお取り扱いできませんので、ご注意ください。<br /><br />
+      </div>
+      <el-header id="headerArea" height="474px">
+        <div>
+          <img src="../../../assets/kikenhin.jpg" width="670px" height="474px">
+        </div>
+      </el-header>
+      <div>
+        &emsp;※危険品でないと証明するため安全データシートの提出のお願いをする場合はあります<br />
+      </div>
+      <template #footer>
+        <ra-button class="pupup-button" type="primary" @click="closePopup">閉じる</ra-button>
+      </template>
+    </ra-popup>
+
+    <!--直接配達ポップアップ-->
+    <ra-popup :visible.sync="command.isDirectPopupOpen" title="直接配達記録サービス" @close="closeDirectPopup" width="800px">
+      <div>
+        &emsp;高額なお荷物や大切なお荷物を手渡しでお届けするサービスです。<br />&emsp;送り状作成時、直接配達記録サービス利用を選択できるようになります。<br /><br />
+      </div>
+      <el-header id="headerArea" height="243px">
+        <div>
+          <img src="../../../assets/direct.png" width="676px" height="243px">
+        </div>
+      </el-header>
+      <template #footer>
+        <ra-button class="pupup-button" type="primary" @click="closeDirectPopup">閉じる</ra-button>
+      </template>
+    </ra-popup>
+
+  <div v-for="error in bind_params.model.errors" :key="error">
+    <div class="messageGuide" v-if="bind_params.model.errors !== ''">
+      <font-awesome-icon icon="exclamation-circle"></font-awesome-icon>
+      <span class="errorApi">{{error}}</span>
+    </div>
+  </div>
+  <tr>
+    <td class="panelLeft"></td>
+    <td class="panelRight">
+      <div class="buttonRight">
+        <!-- 前へボタン -->
+        <ra-button-group>
+          <ra-button
+            @click="onClickNextPrev(0)"
+            type="info"
+            size="small"
+            v-if="bind_params.model.updateMode"
+            :disabled="lengZero"
+            ><i class="el-icon-arrow-left"></i>前へ</ra-button
+          >
+          <!-- 次へボタン -->
+          <ra-button
+            @click="onClickNextPrev(1)"
+            type="info"
+            size="small"
+            v-if="bind_params.model.updateMode"
+            :disabled="lengMax"
+            >次へ<i class="el-icon-arrow-right"></i
+          ></ra-button>
+        </ra-button-group>
+      </div>
+    </td>
+  </tr>
+
+  <!-- 出荷人情報パネル -->
+  <tr>
+    <td class="panelLeft">
+      <ra-panel title="出荷人情報" ref="ref_validate1">
+      <p>
+        <font color="red">
+          ご連絡可能なメールアドレスの記載をお願いします。<br>
+          （ご出荷後、貨物についてお問い合わせさせていただく場合がございます）<br>
+        </font>
+      </p>
+      <br>
+        <div class="">
+          <sm-select-country
+            com-id="irai_country_cd"
+            caption="国名"
+            v-model="bind_params.model.model_shukka.irai_country_cd"
+            validate="required"
+            disabled
+          >
+          </sm-select-country>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai_yubin"
+            caption="郵便番号"
+            v-model="bind_params.model.model_shukka.irai_yubin"
+            validate="max:12|alpha_num|required"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+
+          <so-window
+            :visible.sync="yubinVisible"
+            :table="bind_params.result_model.grid_result_set"
+            :columnNames="columnNames"
+            :labeloption="labeloption"
+            :titledate="subtitle"
+            @click="oncliclkirai"
+            @result="onClickPlusResult"
+            @closed="onClickPlusClosed"
+          ></so-window>
+        </div>
+
+        <div>
+          <rm-input
+            com-id="irai_shu_cd"
+            caption="州・省・県"
+            v-model="bind_params.model.model_shukka.irai_shu_cd"
+            validate="max:35|alpha_num_symbol"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai_toshi_nm"
+            caption="都市名"
+            v-model="bind_params.model.model_shukka.irai_toshi_nm"
+            validate="max:35|alpha_num_symbol|required"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai1_add"
+            caption="住所1"
+            v-model="bind_params.model.model_shukka.irai1_add"
+            validate="required|alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai2_add"
+            caption="住所2"
+            v-model="bind_params.model.model_shukka.irai2_add"
+            validate="alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai3_add"
+            caption="住所3"
+            v-model="bind_params.model.model_shukka.irai3_add"
+            validate="alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai1_nm"
+            caption="会社名"
+            v-model="bind_params.model.model_shukka.irai1_nm"
+            validate="required|alpha_num_symbol|max:60"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai2_nm"
+            caption="氏名"
+            v-model="bind_params.model.model_shukka.irai2_nm"
+            validate="required|alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai_mail"
+            caption="メールアドレス"
+            v-model="bind_params.model.model_shukka.irai_mail"
+            validate="required|mail_address|max:50"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <!-- +81の部分は国番号のバインドを入れる想定 -->
+        <div>
+          <rm-input
+            com-id="irai_tel"
+            caption="電話番号"
+            v-model="bind_params.model.model_shukka.irai_tel"
+            :validate="'required|telcode|telmax:' + bind_params.model.model_shukka.irai_country_tel_cd"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+            <template slot="prepend" ref="irai_country_tel_cd">
+              <span v-text="bind_params.model.model_shukka.irai_country_tel_cd"></span>
+            </template>
+          </rm-input>
+        </div>
+        <div>
+          <sm-select
+            com-id="iraitorokuno1_cd"
+            caption="登録番号区分1"
+            ref="iraitorokuno1_cd"
+            v-model="bind_params.model.model_shukka.iraitorokuno1_cd"
+            kbnNm="torokutype_cmb"
+            :disabled="bind_params.model.readOnlyMode"
+            :validate="valiCheckTorokuNoKbn(bind_params.model.model_shukka.iraitorokuno1)"
+            blankAble
+            clearable
+            filterable
+          >
+          </sm-select>
+        </div>
+        <div>
+          <rm-input
+            com-id="iraitorokuno1"
+            caption="登録番号1"
+            v-model="bind_params.model.model_shukka.iraitorokuno1"
+            :validate="valiCheckTorokuNo(bind_params.model.model_shukka.iraitorokuno1_cd)"
+            :disabled="disCheckOther(bind_params.model.model_shukka.iraitorokuno1_cd,bind_params.model.model_shukka.iraitorokuno1)||bind_params.model.readOnlyMode"
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <sm-select
+            com-id="iraitorokuno2_cd"
+            caption="登録番号区分2"
+            ref="iraitorokuno2_cd"
+            v-model="bind_params.model.model_shukka.iraitorokuno2_cd"
+            kbnNm="torokutype_cmb"
+            :disabled="disCheckOther(bind_params.model.model_shukka.iraitorokuno1_cd,bind_params.model.model_shukka.iraitorokuno2_cd)||bind_params.model.readOnlyMode"
+            :validate="valiCheckTorokuNoKbn(bind_params.model.model_shukka.iraitorokuno2)"
+            blankAble
+            clearable
+            filterable
+          >
+          </sm-select>
+        </div>
+        <div>
+          <rm-input
+            com-id="iraitorokuno2"
+            caption="登録番号2"
+            v-model="bind_params.model.model_shukka.iraitorokuno2"
+            :validate="valiCheckTorokuNo(bind_params.model.model_shukka.iraitorokuno2_cd)"
+            :disabled="disCheckOther(bind_params.model.model_shukka.iraitorokuno2_cd,bind_params.model.model_shukka.iraitorokuno2)||bind_params.model.readOnlyMode"
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <sm-select
+            com-id="iraitorokuno3_cd"
+            caption="登録番号区分3"
+            ref="iraitorokuno3_cd"
+            v-model="bind_params.model.model_shukka.iraitorokuno3_cd"
+            kbnNm="torokutype_cmb"
+            :disabled="disCheckOther(bind_params.model.model_shukka.iraitorokuno2_cd,bind_params.model.model_shukka.iraitorokuno3_cd)||bind_params.model.readOnlyMode"
+            :validate="valiCheckTorokuNoKbn(bind_params.model.model_shukka.iraitorokuno3)"
+            blankAble
+            clearable
+            filterable
+          >
+          </sm-select>
+        </div>
+        <div>
+          <rm-input
+            com-id="iraitorokuno3"
+            caption="登録番号3"
+            v-model="bind_params.model.model_shukka.iraitorokuno3"
+            :validate="valiCheckTorokuNo(bind_params.model.model_shukka.iraitorokuno3_cd)"
+            :disabled="disCheckOther(bind_params.model.model_shukka.iraitorokuno3_cd,bind_params.model.model_shukka.iraitorokuno3)||bind_params.model.readOnlyMode"
+            clearable
+          >
+          </rm-input>
+        </div>
+      </ra-panel>
+    </td>
+
+    <!-- 出荷人情報パネル -->
+    <td class="panelRight">
+      <ra-panel title="受取人情報　　DCT（配達日数／国ごとの禁制品／郵便番号　検索ツール）は" ref="ref_validate2" linknm="こちら" url="https://dct.dhl.com/" :hedderlinkflg="true">
+        <p>
+          <font color="red">
+          受取人様の正しい郵便番号の記載がない場合、<br>
+          ①お荷物を発送できないこと、②遠隔地手数料対象外のエリアでもご請求の対象となることがあります。<br>
+          ※郵便番号がないエリアを除きます
+          </font>
+        </p>
+        <div class="">
+          <sm-select-country
+            com-id="otodoke_country_cd"
+            caption="国名"
+            ref="otodoke_country_cd"
+            v-model="bind_params.model.model_shukka.otodoke_country_cd"
+            validate="required"
+            :disabled="bind_params.model.readOnlyMode"
+            filterable
+          >
+          </sm-select-country>
+        </div>
+        <div>
+          <ra-tooltip
+            class=""
+            effect="dark"
+            placement="right"
+            :tabindex="minusTab"
+            ref="valtool1"
+          >
+            <div slot="content">
+              都市名を入力し、郵便番号検索ボタンを押下すると候補が表示されます。</br>
+              一部仕向け地において、表示が不十分となる場合があります（イギリス、ブラジル等）</br>
+              正しい郵便番号をご確認の上、入力をお願いいたします。</br>
+            </div>
+            <rm-input
+              com-id="otodoke_yubin"
+              caption="郵便番号"
+              v-model="bind_params.model.model_shukka.otodoke_yubin"
+              validate="max:12|alpha_num_space"
+              :disabled="bind_params.model.readOnlyMode"
+              placeholder=""
+              clearable
+            >
+            </rm-input>
+          </ra-tooltip>
+            <so-window
+              :visible.sync="yubinVisible"
+              :table="bind_params.result_model.grid_result_set"
+              :columnNames="columnNames"
+              :labeloption="labeloption"
+              :titledate="subtitle"
+              @click="oncliclkotodoke"
+              @result="onClickPlusResult"
+              @closed="onClickPlusClosed"
+            ></so-window>
+        </div>
+        <div>
+          <rm-input
+            com-id="otodoke_shu_cd"
+            caption="州・省・県"
+            v-model="bind_params.model.model_shukka.otodoke_shu_cd"
+            validate="max:35|alpha_num_symbol"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="otodoke_toshi_nm"
+            caption="都市名"
+            v-model="bind_params.model.model_shukka.otodoke_toshi_nm"
+            validate="max:35|alpha_num_symbol|required"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="otodoke1_add"
+            caption="住所1"
+            v-model="bind_params.model.model_shukka.otodoke1_add"
+            validate="required|alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="otodoke2_add"
+            caption="住所2"
+            v-model="bind_params.model.model_shukka.otodoke2_add"
+            validate="alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="otodoke3_add"
+            caption="住所3"
+            v-model="bind_params.model.model_shukka.otodoke3_add"
+            validate="alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <ra-tooltip
+            class=""
+            effect="dark"
+            placement="right"
+            :tabindex="minusTab"
+            ref="valtool2"
+          >
+            <div slot="content">
+              個人様宛の貨物の場合は、</br>＊会社名、＊氏名の両方に</br>氏名を入力してください。</br>
+            </div>
+            <rm-input
+              com-id="otodoke1_nm"
+              caption="会社名"
+              v-model="bind_params.model.model_shukka.otodoke1_nm"
+              validate="required|alpha_num_symbol|max:60"
+              :disabled="bind_params.model.readOnlyMode"
+              placeholder=""
+              clearable
+            >
+            </rm-input>
+          </ra-tooltip>
+        </div>
+        <div>
+          <rm-input
+            com-id="otodoke2_nm"
+            caption="氏名"
+            v-model="bind_params.model.model_shukka.otodoke2_nm"
+            validate="required|alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="otodoke_mail"
+            caption="メールアドレス"
+            v-model="bind_params.model.model_shukka.otodoke_mail"
+            validate="required|mail_address|max:50"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="otodoke_tel"
+            caption="電話番号"
+            v-model="bind_params.model.model_shukka.otodoke_tel"
+            :validate="'required|telcode|telmax:' + getTelCode"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+            <template slot="prepend"> <span v-text="getTelCode"></span> </template>
+          </rm-input>
+        </div>
+        <div>
+          <sm-select
+            com-id="otodoketorokuno1_cd"
+            caption="登録番号区分1"
+            ref="otodoketorokuno1_cd"
+            v-model="bind_params.model.model_shukka.otodoketorokuno1_cd"
+            kbnNm="torokutype_cmb"
+            :disabled="bind_params.model.readOnlyMode"
+            :validate="valiCheckTorokuNoKbn(bind_params.model.model_shukka.otodoketorokuno1)"
+            blankAble
+            clearable
+            filterable
+          >
+          </sm-select>
+        </div>
+        <div>
+          <rm-input
+            com-id="otodoketorokuno1"
+            caption="登録番号1"
+            v-model="bind_params.model.model_shukka.otodoketorokuno1"
+            :validate="valiCheckTorokuNo(bind_params.model.model_shukka.otodoketorokuno1_cd)"
+            :disabled="disCheckOther(bind_params.model.model_shukka.otodoketorokuno1_cd,bind_params.model.model_shukka.otodoketorokuno1)||bind_params.model.readOnlyMode"
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <sm-select
+            com-id="otodoketorokuno2_cd"
+            caption="登録番号区分2"
+            ref="otodoketorokuno2_cd"
+            v-model="bind_params.model.model_shukka.otodoketorokuno2_cd"
+            kbnNm="torokutype_cmb"
+            :disabled="disCheckOther(bind_params.model.model_shukka.otodoketorokuno1_cd,bind_params.model.model_shukka.otodoketorokuno2_cd)||bind_params.model.readOnlyMode"
+            :validate="valiCheckTorokuNoKbn(bind_params.model.model_shukka.otodoketorokuno2)"
+            blankAble
+            clearable
+            filterable
+          >
+          </sm-select>
+        </div>
+        <div>
+          <rm-input
+            com-id="otodoketorokuno2"
+            caption="登録番号2"
+            v-model="bind_params.model.model_shukka.otodoketorokuno2"
+            :validate="valiCheckTorokuNo(bind_params.model.model_shukka.otodoketorokuno2_cd)"
+            :disabled="disCheckOther(bind_params.model.model_shukka.otodoketorokuno2_cd,bind_params.model.model_shukka.otodoketorokuno2)||bind_params.model.readOnlyMode"
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <sm-select
+            com-id="otodoketorokuno3_cd"
+            caption="登録番号区分3"
+            ref="otodoketorokuno3_cd"
+            v-model="bind_params.model.model_shukka.otodoketorokuno3_cd"
+            kbnNm="torokutype_cmb"
+            :disabled="disCheckOther(bind_params.model.model_shukka.otodoketorokuno2_cd,bind_params.model.model_shukka.otodoketorokuno3_cd,)||bind_params.model.readOnlyMode"
+            :validate="valiCheckTorokuNoKbn(bind_params.model.model_shukka.otodoketorokuno3)"
+            blankAble
+            clearable
+            filterable
+          >
+          </sm-select>
+        </div>
+        <div>
+          <rm-input
+            com-id="otodoketorokuno3"
+            caption="登録番号3"
+            v-model="bind_params.model.model_shukka.otodoketorokuno3"
+            :validate="valiCheckTorokuNo(bind_params.model.model_shukka.otodoketorokuno3_cd)"
+            :disabled="disCheckOther(bind_params.model.model_shukka.otodoketorokuno3_cd,bind_params.model.model_shukka.otodoketorokuno3)||bind_params.model.readOnlyMode"
+            clearable
+          >
+          </rm-input>
+        </div>
+      </ra-panel>
+    </td>
+  </tr>
+  <tr>
+    <td class="panelCenter" colspan="2">
+      <!-- 発送情報パネル -->
+      <ra-panel title="発送情報" ref="ref_validate3">
+        <!-- APIで当日が入る想定 -->
+        <div>
+          <rm-date-picker
+            com-id="d_hassou"
+            caption="出荷日"
+            v-model="bind_params.model.model_shukka.d_hassou"
+            :disabled="bind_params.model.readOnlyMode"
+            validate="required"
+          ></rm-date-picker>
+        </div>
+        <div>
+          <ra-tooltip
+           class="" 
+           effect="dark" 
+           placement="right" 
+           :tabindex="minusTab" 
+           ref="valtool4"
+           >
+            <div slot="content">
+              内容品に合わせて選択してください</br>
+              書類以外をドキュメントクーリエとして発送はできません</br>
+            </div>
+            <sm-select
+              com-id="ispack_cd"
+              caption="貨物の種類"
+              ref="ispack_cd"
+              v-model="bind_params.model.model_shukka.ispack_cd"
+              validate="required"
+              :disabled="bind_params.model.readOnlyMode"
+              kbnNm="is_doc_kbn"
+              filterable
+            ></sm-select>
+          </ra-tooltip>
+          &emsp;イラン、イラク向けへ書類を発送する場合は<u>スモールパーセル（小荷物）</u>をご選択ください。<br />
+        </div>
+        <div class="">
+          <div>
+            <ra-tooltip
+              class=""  
+              effect="dark"
+              placement="right"
+              :tabindex="minusTab"
+              ref="valtool3"
+            >
+              <div slot="content">
+                本項目に記載いただいた内容は送り状に貨物の内容品として記載されます。</br>
+                内容はもれなく記載いただきますようお願いします。</br>
+              </div>
+              <rm-input
+                com-id="ispack_contents"
+                caption="貨物の内容"
+                ref="ispack_contents"
+                v-model="bind_params.model.model_shukka.ispack_contents"
+                :validate="valiCheckContents"
+                :disabled="bind_params.model.readOnlyMode||disCheckContents"
+                placeholder=""
+                clearable
+              >
+              </rm-input>
+            </ra-tooltip>
+          </div>
+        </div>
+        <div class="">
+          <ra-tooltip
+            class=""
+            effect="dark"
+            placement="right"
+            :tabindex="minusTab"
+            ref="valtool4"
+          >
+            <div slot="content">
+              ・選択いただく貿易条件と次のステップで品目情報に入力いただく商品金額は一致している必要があります。</br>
+              ・貿易条件で、EXW（工場渡し）、FAS（船側渡し）、FOB（本船渡し）を選択された場合は本システムから</br>
+              　外航保険の申込はできません。</br>
+              ・荷送人（Shipper）が輸入国で発生する輸入関税等の諸税のお支払いをされる場合は</br>
+              　DDP（仕向地持込み渡し関税込み）を選択してください。“DDP手数料“として1,500円を請求させていただきます。</br>
+              　現地でかかった諸税は当社が立替え納税し後日に請求させていただきます（諸税は発生しない場合もございます）。</br>
+              ・DDP対応不可国・地域がございます。</br>
+              　詳しくはグローバルコールセンター（0120-18-9595）へお問い合わせください。</br>
+            </div>
+            <sm-select
+              com-id="incoterms"
+              caption="貿易条件"
+              ref="incoterms"
+              v-model="bind_params.model.model_shukka.incoterms"
+              :disabled="bind_params.model.readOnlyMode"
+              validate="required"
+              kbnNm="incoterm_cmb"
+              filterable
+            >
+            </sm-select>
+          </ra-tooltip>
+        </div>
+        <div class="" v-if="bind_params.model.model_shukka.ispack_cd==='001'">
+          <ra-tooltip
+            class=""
+            effect="dark"
+            placement="right"
+            :tabindex="minusTab"
+            ref="valtool5"
+          >
+            <div slot="content">
+              インボイス番号は必須項目です。</br>
+              荷受人様と取決めがない場合は任意のインボイス番号を入力してください。</br>
+            </div>
+            <rm-input
+              com-id="invoice_no"
+              caption="インボイス番号"
+              v-model="bind_params.model.model_shukka.invoice_no"
+              validate="required|max:35|alpha_num"
+              :disabled="bind_params.model.readOnlyMode"
+              placeholder=""
+              clearable
+            >
+            </rm-input>
+          </ra-tooltip>
+        </div>
+        <div class="" v-if="bind_params.model.model_shukka.ispack_cd==='001'">
+          <sm-select
+            com-id="invoice_cur"
+            caption="インボイス通貨"
+            ref="invoice_cur"
+            v-model="bind_params.model.model_shukka.invoice_cur"
+            :disabled="bind_params.model.readOnlyMode"
+            validate="required"
+            kbnNm="invoice_cur_cmb"
+            filterable
+          >
+          </sm-select>
+        </div>
+        <div class="">
+          <sm-select
+            com-id="invoiceexportreason"
+            caption="輸出目的"
+            ref="invoiceexportreason"
+            v-if="bind_params.model.model_shukka.ispack_cd==='001'"
+            v-model="bind_params.model.model_shukka.invoiceexportreason"
+            validate="required"
+            :disabled="bind_params.model.readOnlyMode"
+            kbnNm="exportreason_cmb"
+            filterable
+          >
+          </sm-select>
+        </div>
+        <div class="" v-if="bind_params.model.model_shukka.ispack_cd==='001'">
+          <sm-select
+            com-id="dangeritem_cd"
+            caption="危険品区分"
+            ref="dangeritem_cd"
+            v-model="bind_params.model.model_shukka.dangeritem_cd"
+            :disabled="bind_params.model.readOnlyMode"
+            validate="required"
+            kbnNm="dangeritem_cmb"
+            filterable
+          >
+          </sm-select>
+          &emsp;&emsp;
+          <ra-button @click="openPopup" type="primary" size="mini">危険品とは</ra-button>
+        </div>
+        <div class="">
+          <rm-checkbox-group
+           com-id="direct_flg"
+           caption="直接配達記録サービス"
+           v-model="bind_params.model.model_shukka.direct_flg"
+           label-width="6"
+           :disabled="bind_params.model.readOnlyMode"
+          >
+          <ra-checkbox label="1">利用する</ra-checkbox>
+          </rm-checkbox-group>
+          &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;
+          <ra-button @click="openDirectPopup" type="primary" size="mini">直接配達記録サービスとは</ra-button>
+        </div>
+        <div class="" v-if="bind_params.model.model_shukka.ispack_cd==='001'">
+          <rm-checkbox-group
+            com-id="gaikohoken_flg"
+            caption="外航貨物海上保険"
+            v-model="bind_params.model.model_shukka.gaikohoken_flg"
+            label-width="6"
+            :disabled="bind_params.model.readOnlyMode"
+          >
+            <ra-checkbox label="1">利用する</ra-checkbox>
+          </rm-checkbox-group>
+        </div>
+        <div class="" v-if="bind_params.model.model_shukka.ispack_cd==='001' && bind_params.model.model_shukka.gaikohoken_flg == true">
+          <ra-tooltip
+            class=""
+            effect="dark"
+            placement="right"
+            :tabindex="minusTab"
+            ref="valtool6"
+          >
+            <div slot="content">
+              荷物金額は、荷物の価値（JPY）＋輸送費用を参考に算出してください。</br>
+            </div>
+            <rm-input
+              com-id="gaikohoken_kin"
+              caption="荷物金額(JPY)"
+              v-model="bind_params.model.model_shukka.gaikohoken_kin"
+              :disabled="bind_params.model.readOnlyMode"
+              validate="required|max:8|min_value:0|max_value:99999999|numeric"
+              placeholder=""
+              clearable
+            >
+            </rm-input>
+          </ra-tooltip>
+        </div>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;【外航貨物海上保険未加入の場合】<br />
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;貨物事故発生時の当社からの賠償限度額は、<br />
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;➀貨物の内容物の現在の市場価格若しくは荷送人が申告した価額<br />
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;➁損害を受けた貨物1キログラム当たり26ＳＤＲ（≒5194円　2025年1月現在）<br />
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;のいずれか低い額となります。
+      </ra-panel>
+    </td>
+  </tr>
+  <tr>
+    <td class="panelCenter" colspan="2">
+      <ra-panel required title="梱包情報" ref="ref_validate4" v-if="bind_params.model.updateMode">
+        <div class="">
+          <div class="clear">
+            <!-- 登録ボタン -->
+            <br />
+            <ra-button
+              @click="onClickRegistKonpo"
+              v-if="bind_params.model.updateMode"
+              :disabled="bind_params.model.readOnlyMode"
+              type="warning"
+              size="small"
+              >設定</ra-button
+            >
+            <br />
+            総計 {{totalKonpo}} 件　総個口数 {{bind_params.model.sumhaisokosu}} 個口　総重量
+            {{bind_params.model.sumweight}} kg
+
+            <vxe-table
+              ref="bind_params.model.search_result_model_konpou"
+              height="200"
+              :data.sync="bind_params.model.search_result_model_konpou"
+              highlight-current-row
+            >
+              <vxe-table-column
+                field="no"
+                title="No."
+                width="77"
+                align="right"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="n_packhaisokosu"
+                width="252"
+                title="個口数"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="package_weight"
+                width="252"
+                title="重量(kg)"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="package_length"
+                width="252"
+                title="長さ(cm)"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="package_width"
+                width="252"
+                title="幅(cm)"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="package_height"
+                width="252"
+                title="高さ(cm)"
+                sortable
+              ></vxe-table-column>
+            </vxe-table>
+          </div>
+        </div>
+      </ra-panel>
+    </td>
+  </tr>
+  <tr>
+    <td class="panelCenter" colspan="2">
+      <!-- 非書類のみ表示 -->
+      <ra-panel
+      :required ="bind_params.model.model_shukka.ispack_cd === '001'"
+        title="品目情報"
+        ref="ref_validate5"
+        v-if="bind_params.model.model_shukka.ispack_cd === '001'&& bind_params.model.updateMode"
+      >
+        <div class="">
+          <div class="clear">
+            <!-- 登録ボタン -->
+            <br />
+            <ra-button
+              @click="onClickRegistHinmoku"
+              type="warning"
+              size="small"
+              :disabled="bind_params.model.readOnlyMode"
+              >設定</ra-button
+            >
+            <br />
+            総計 {{totalHinmoku}} 件　総商品金額 {{bind_params.model.countprice}} ({{bind_params.model.invoice_cur_text}})　総商品重量
+            {{bind_params.model.netw}} kg　総梱包込商品重量　　{{bind_params.model.grossw}} kg
+
+            <vxe-table
+              ref="bind_params.model.search_result_model_hinmoku"
+              height="200"
+              :data.sync="bind_params.model.search_result_model_hinmoku"
+              highlight-current-row
+            >
+              <vxe-table-column
+                field="no"
+                title="No."
+                width="77"
+                align="right"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="item_nm"
+                width="200"
+                title="品目詳細"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="item_kosu"
+                width="140"
+                title="数量"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="item_unit"
+                width="160"
+                title="単位"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="item_price"
+                width="220"
+                :title="'単位毎商品金額（' + bind_params.model.invoice_cur_text + ')'"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="n_netweight"
+                width="180"
+                title="商品重量(kg)"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="n_grossweight"
+                width="180"
+                title="梱包込商品重量(kg)"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="item_country_nm"
+                width="180"
+                title="原産国"
+                sortable
+              ></vxe-table-column>
+            </vxe-table>
+          </div>
+        </div>
+      </ra-panel>
+    </td>
+  </tr>
+  <tr>
+    <td class="panelCenter" colspan="2">
+      <!-- 非書類のみ表示 -->
+      <ra-panel
+        title="関係者情報"
+        ref="ref_validate6"
+        v-if="bind_params.model.model_shukka.ispack_cd === '001'&& bind_params.model.updateMode"
+      >
+        <div class="">
+          <div class="float"></div>
+          <div class="clear">
+            <!-- 登録ボタン -->
+            <br />
+            <ra-button
+              @click="onClickRegistRelation"
+              :disabled="bind_params.model.readOnlyMode"
+              type="warning"
+              size="small"
+              >設定</ra-button
+            >
+            <vxe-table
+              ref="bind_params.model.search_result_model_kankeisya"
+              height="200"
+              :data.sync="bind_params.model.search_result_model_kankeisya"
+              highlight-current-row
+            >
+              <vxe-table-column
+                field="no"
+                title="No."
+                width="77"
+                align="right"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="hanyo1_nm"
+                width="140"
+                title="関係性"
+                sortable
+              ></vxe-table-column>
+              <!--サンプル提示用に記載-->
+              <vxe-table-column
+                field="person_country_nm"
+                width="140"
+                title="国名"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="person_yubin"
+                width="140"
+                title="郵便番号"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="person_shu_cd"
+                width="140"
+                title="州・省・県"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="person_toshi_nm"
+                width="140"
+                title="都市名"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="person1_add"
+                width="140"
+                title="住所1"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="person2_add"
+                width="140"
+                title="住所2"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="person3_add"
+                width="140"
+                title="住所3"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="person1_nm"
+                width="140"
+                title="会社名"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="person2_nm"
+                width="140"
+                title="氏名"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="person_mail"
+                width="140"
+                title="メールアドレス"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="person_tel"
+                width="140"
+                title="電話番号"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="torokuno1_cd"
+                width="140"
+                title="登録番号区分1"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="torokuno1"
+                width="140"
+                title="登録番号1"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="torokuno2_cd"
+                width="140"
+                title="登録番号区分2"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="torokuno2"
+                width="140"
+                title="登録番号2"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="torokuno3_cd"
+                width="140"
+                title="登録番号区分3"
+                sortable
+              ></vxe-table-column>
+              <vxe-table-column
+                field="torokuno3"
+                width="140"
+                title="登録番号3"
+                sortable
+              ></vxe-table-column>
+            </vxe-table>
+          </div>
+        </div>
+      </ra-panel>
+    </td>
+  </tr>
+  <tr>
+    <td class="panelCenter" colspan="2">
+      <ra-panel>
+        <div class="bottunRight">
+          <!-- 登録ボタン -->
+          <ra-button
+            @click="onClickRegist"
+            v-if="!bind_params.model.updateMode"
+            type="warning"
+            size="small"
+            >配送基本情報の登録</ra-button
+          >
+          <!-- 更新ボタン -->
+          <ra-button
+            @click="onClickUpdate"
+            v-if="bind_params.model.updateMode"
+            :disabled="bind_params.model.readOnlyMode"
+            type="warning"
+            size="small"
+            >配送基本情報の更新</ra-button
+          >
+          <!-- 複写登録ボタン -->
+          <ra-button
+            @click="onClickCopyRegist"
+            v-if="bind_params.model.updateMode"
+            type="warning"
+            size="small"
+            >複写登録</ra-button
+          >
+          <!-- 戻るボタン -->
+          <ra-button @click="onClickBack" type="info" size="small"> 戻る</ra-button>
+        </div>
+      </ra-panel>
+    </td>
+  </tr>
+  <tr>
+    <td class="panelCenter" colspan="2">
+      <router-view></router-view>
+    </td>
+  </tr>
+</div>

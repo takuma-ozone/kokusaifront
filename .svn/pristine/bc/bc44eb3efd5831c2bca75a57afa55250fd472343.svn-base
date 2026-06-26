@@ -1,0 +1,14 @@
+{
+  "firstAccessFlg": false,
+  "passFlg": false,
+  "passLimit": "20191031",
+  "comNoUseLdapFlg": false,
+  "remainder": 0,
+  "menuItemDto": [],
+  "userInfoDto": {},
+  "osiraseItemDto": {},
+  "isExistWarningList": false,
+  "isShowWarningList": false,
+  "licenseDto": {},
+  "comSystemItemDto": {}
+}

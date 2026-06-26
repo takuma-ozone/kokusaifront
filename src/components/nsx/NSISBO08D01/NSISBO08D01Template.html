@@ -1,0 +1,64 @@
+<!--
+*************************************************************************************
+* Copyright(C) 1999- Sagawa Express Co.,Ltd. All rights reserved.
+* Copyright(C) 2010- SG SYSTEMS Co.,Ltd. All rights reserved.
+* Copyright(C) 2019 by Future Architect, Inc. Japan
+* 画面ID:NSISBO08-D01
+* 画面名: 荷送人選択（ポップアップ）
+* 作成者: XXX
+* 更新履歴:
+* 更新日付 更新者 更新内容
+* 201X/XX/XX XXX 設計書-新規作成
+*
+*************************************************************************************
+-->
+<!-- TODO 1. 設計書の画面イメージ通りに、画面項目にスタイルを当ててください（詳しくはCSSグリッドのガイドを参考に） -->
+<!-- TODO 2. ラベルなしの項目については:has-label=falseを追記してください -->
+<!-- TODO 3. その他TODOになっているものについて開発を行ってください -->
+<div class="NSISBO08D01">
+  <!-- 荷送人選択パネル -->
+  <!-- TODO: ポップアップの表示・非表示を制御するモデルを修正してください -->
+  <ra-popup title="荷送人選択" :visible.sync="isVisible">
+    <!-- エラーメッセージガイドの表示 -->
+    <ro-message-guide></ro-message-guide>
+
+    <div style="margin-top: 10px;">
+      <rm-input
+        com-id="xxx"
+        caption="INPUT"
+        validate="numeric"
+        v-model="text1"
+        label-width="2"
+      ></rm-input>
+    </div>
+
+    <div class="">
+      <!-- テーブル上のツールバー領域 -->
+      <vxe-toolbar id="toolbar" setting resizable></vxe-toolbar>
+      <!-- テーブル -->
+      <!-- TODO テーブルに検索結果一覧モデルをバインドしてください -->
+      <vxe-table ref="vxeTable" height="250" :data.sync="bind.nisoninDtoList">
+        <vxe-table-column type="radio" align="center" width="40"></vxe-table-column>
+        <vxe-table-column field="nisoninCode" width="120" title="お客様コード"></vxe-table-column>
+        <vxe-table-column field="meisho1" width="120" title="名称１"></vxe-table-column>
+        <vxe-table-column field="meisho2" width="120" title="名称２"></vxe-table-column>
+        <vxe-table-column field="telNo" width="120" title="電話番号"></vxe-table-column>
+        <vxe-table-column field="postNo" width="120" title="郵便番号"></vxe-table-column>
+        <vxe-table-column field="jusho1" width="120" title="住所１"></vxe-table-column>
+        <vxe-table-column field="jusho2" width="120" title="住所２"></vxe-table-column>
+      </vxe-table>
+    </div>
+
+    <!-- フッターパネル -->
+    <!-- TODO: 以下のfooter要素を`ra-popup`タグ内に移動して`template`タグのコメントアウトを外してください -->
+    <template #footer>
+      <!-- 閉じるボタン -->
+      <!-- TODO ボタンに紐づくメソッドを追加してください -->
+      <ra-button @click="">閉じる</ra-button>
+
+      <!-- 決定ボタン -->
+      <!-- TODO ボタンに紐づくメソッドを追加してください -->
+      <ra-button @click="">決定</ra-button>
+    </template>
+  </ra-popup>
+</div>

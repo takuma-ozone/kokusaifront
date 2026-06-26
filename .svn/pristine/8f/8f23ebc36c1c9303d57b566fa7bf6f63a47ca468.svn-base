@@ -1,0 +1,107 @@
+<div class="SSMISSD08">
+  <ro-message-guide></ro-message-guide>
+  <ra-panel title="外航貨物海上保険加入依頼" ref="ref_validate">
+    <div class="riyou_joukyou">加入状況：{{riyouFlgText}}
+      <img class="ininjouImg" v-if="bind_params.model.riyou_flg!==3" src="../../../assets/ininjou.png" align="right">
+      <div class="riyou_msg" v-if="bind_params.model.riyou_flg===2">包括委任状の内容を修正し、再度申し込みをお願いします。</div>
+    </div>
+
+    <div class="marginR" v-if="bind_params.model.riyou_flg===2">
+      <div>■よくある登録不備事例</div>
+      <div>・3枚すべてにご記入いただいていない。</div>
+      <div>・アップロードしたファイルが間違っている。</div>
+      <div>・ご記入頂いている情報が佐川急便にご登録頂いている情報と異なる。</div>
+      <div>・押印がされていない。</div>
+      <div>・日付が入っていない。</div>
+    </div>
+
+    <div class="marginB">
+      <div>■外航貨物海上保険の対象について</div>
+      <div>・本保険は、下記の除外貨物を除いた一般貨物（日用品・雑貨等）を対象とします。</div>
+      <div>・なお、保険の対象となるか不明の場合は、事前に佐川急便までご確認をお願いします。</div>
+      <div>・事業主でない個人のお客様のご加入は不可となりますので、ご了承ください。</div>
+      <div>・保険料は、CIF価額（JPY）×110%×0.2%になります。</div>
+      <div>・ご不明な点等について、0120‐18‐9595佐川急便グローバルコールセンターまで【平日】9：00～18：00〈土日祝を除く〉</div>
+    </div>
+
+    <div class="marginB" v-if="bind_params.model.riyou_flg!==3">
+      <div>■お申込みの際は以下をご確認ください</div>
+      <div>・会社様は会社印（角印等※住所印のみ不可）を個人様は個人印の押印をお願いします。</div>
+      <div>・委任状の情報（お名前・ご住所）は、弊社にご登録のお客様情報（お名前・ご住所）と同一にお願いします。</div>
+      <div>・個人事業主様で会社印をお持ちでないお客様は、あらかじめ、弊社にご登録のお客様情報（お名前）を個人様名にご変更のうえ、</div>
+      <div>　保険加入委任状に氏名のご記入と押印の上、ご提出をお願いします。</div>
+    </div>
+
+    <div class="marginB">
+      <div class="linkRight">
+        <!-- 重要事項リンク -->
+        <ra-link @click="click_important" type="primary" size="small">重要事項のご説明</ra-link>
+      </div>
+      <div class="linkRight">
+        <!-- 取扱不可品目リンク -->
+        <ra-link @click="click_not_available" type="primary" size="small">外航貨物海上保険でお取り扱い出来ない品目について</ra-link>
+      </div>
+      <div class="linkRight">
+        <!-- 包括委任状リンク -->
+        <ra-link @click="click_original" type="primary" size="small">お申込み用包括委任状原本</ra-link>
+      </div>
+    </div>
+
+    <div class="marginB" v-if="bind_params.model.riyou_flg===3">
+      ■押印頂いた委任状原本(「フォワーダー等用・引受保険会社用」)については、佐川急便管轄営業店にお渡しください。</br>
+    </div>
+
+    <div v-if="riyouFlgBool">
+      <div class="upload">
+        <rm-upload
+        label-width="4"
+        ref="upload"
+        com-id="uploadPdf"
+        caption="包括委任状"
+        accept=".pdf"
+        :on-exceed="handleMax"
+        :limit="bind_params.fileNm"
+        is-required
+        :disabled="!riyouFlgBool"
+        ></rm-upload>
+        <div><b>お申込み用包括委任状原本に必要事項を記載しアップロードをお願いします。</b></div>
+      </div>
+      <div class="checkboxRight">
+        <rm-checkbox-group com-id="checkboxJuyo" caption="" v-model="bind_params.isCheckJuyo" :disabled="!riyouFlgBool" :has-label="SSMISSD08Const.CHECKBOX_LABEL">
+          <ra-checkbox label=""></ra-checkbox>
+        </rm-checkbox-group>
+        <span> PDFファイルで「重要事項のご説明」の提供を受けることに同意し、記載事項を確認・保存しました。</span>
+      </div>
+      <div class="checkboxRight">
+        <rm-checkbox-group com-id="checkboxHinmoku" caption="" v-model="bind_params.isCheckHinmoku" :disabled="!riyouFlgBool" :has-label="SSMISSD08Const.CHECKBOX_LABEL">
+          <ra-checkbox label=""></ra-checkbox>
+        </rm-checkbox-group>
+        <span> 「外航貨物海上保険でお取り扱い出来ない品目について」の記載事項を確認しました。</span>
+      </div>
+      <div class="uploadButton">
+        <!-- 保険利用申込ボタン -->
+        <ra-button @click="clickApplication" type="warning" size="small" :disabled="!isCheckValidate">保険利用申込</ra-button>
+      </div>
+    </div>
+
+    <div class="" v-if="pdfButtonVisible">
+      <br>
+      <ra-button @click="onClickCheck" type="success" size="small">
+        申込に利用した包括委任状の確認
+      </ra-button>
+    </div>
+  </ra-panel>
+
+  <ra-panel title="運賃表">
+    <div class="marginB">
+      <div class="linkRightFare">
+        <!-- 運賃表リンク -->
+        <ra-link class="link" @click="click_fare" type="primary" size="small">運賃表参照はこちら</ra-link>
+      </div>
+      <div class="linkRightFare">
+        <!-- 運賃計算ツールリンク -->
+        <ra-link class="link" @click="downloadFareExcelMacro" type="primary" size="small">運賃検索ツールはこちら</ra-link>
+      </div>
+    </div>
+  </ra-panel>
+</div>

@@ -1,0 +1,195 @@
+<div class="SSMISRD03">
+  <div class="gridContainer">
+    <el-header id="headerArea" height="50px">
+      <div class="header">
+        <img src="../../../assets/SG_Logo.png" class="image-logo1" />
+        <span class="display-split">|</span>
+        <span class="display-title">{{ this.$route.meta.title }}</span>
+      </div>
+    </el-header>
+    <ro-message-guide id="msgArea"></ro-message-guide>
+    <div id="stepArea">
+      <el-steps :active="1" simple style="margin-top: 20px">
+        <el-step :title="viewConst.STEP1_TITLE"></el-step>
+        <el-step :title="viewConst.STEP2_TITLE"></el-step>
+        <el-step :title="viewConst.STEP3_TITLE"></el-step>
+      </el-steps>
+    </div>
+    <!-- お客様コード・申込IDパネル -->
+    <div id="moshikomiPanel">
+      <ra-panel :title="viewConst.MOUSHIKOMI_PANEL_TITTLE" ref="ref_validate1">
+        <div class="gap1">
+          <rm-text
+            com-id="haisokokyaku_cd"
+            :caption="viewConst.HAISOKOKYAKU_CD_CAPTION"
+            :value="bind_params.model.haisokokyaku_cd"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="moshikomi_id"
+            :caption="viewConst.MOSHIKOMI_ID_CAPTION"
+            :value="bind_params.model.moshikomi_id"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+      </ra-panel>
+    </div>
+
+    <!-- お客様情報パネル -->
+    <div id="okyakuinfoPanel">
+      <ra-panel :title="viewConst.OKYAKUINFO_PANEL_TITTLE" ref="ref_validate2">
+        <div class="gap1">
+          <rm-text
+            com-id="userno"
+            :caption="viewConst.USERNO_CAPTION"
+            :value="bind_params.model.userno"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="customer_nm"
+            :caption="viewConst.CUSTOMER_NM_CAPTION"
+            :value="bind_params.model.customer_nm"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="customer_nmk"
+            :caption="viewConst.CUSTOMER_NMK_CAPTION"
+            :value="bind_params.model.customer_nmk"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="busho_nm"
+            :caption="viewConst.BUSHO_NM_CAPTION"
+            :value="bind_params.model.busho_nm"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="kokyaku_nm"
+            :caption="viewConst.KOKYAKU_NM_CAPTION"
+            :value="bind_params.model.kokyaku_nm"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="kokyaku_nmk"
+            :caption="viewConst.KOKYAKU_NMK_CAPTION"
+            :value="bind_params.model.kokyaku_nmk"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="customer_tel"
+            :caption="viewConst.CUSTOMER_TEL_CAPTION"
+            :value="bind_params.model.customer_tel"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="customer_fax"
+            :caption="viewConst.CUSTOMER_FAX_CAPTION"
+            :value="bind_params.model.customer_fax"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="customer_mail"
+            :caption="viewConst.CUSTOMER_MAIL_CAPTION"
+            :value="bind_params.model.customer_mail"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="customer_yubin"
+            :caption="viewConst.CUSTOMER_YUBIN_CAPTION"
+            :value="bind_params.model.customer_yubin"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="customer1_add"
+            :caption="viewConst.CUSTOMER1_ADD_CAPTION"
+            :value="bind_params.model.customer1_add"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="customer2_add"
+            :caption="viewConst.CUSTOMER2_ADD_CAPTION"
+            :value="bind_params.model.customer2_add"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+        <div class="gap1">
+          <rm-text
+            com-id="customer3_add"
+            :caption="viewConst.CUSTOMER3_ADD_CAPTION"
+            :value="bind_params.model.customer3_add"
+            labelAlign="left"
+          >
+          </rm-text>
+        </div>
+      </ra-panel>
+    </div>
+    <div id="termPanel">
+      <ra-panel title="お申し込み時の注意">
+        「登録」ボタンを押した際に、
+        <ra-link type="primary" @click="click_terms" class="link">
+          <font> 飛脚国際宅配便出荷システム利用規約 </font>
+        </ra-link>
+        および
+        <ra-link type="primary" @click="click_term" class="link">
+          <font> 飛脚国際宅配便約款 </font>
+        </ra-link>
+        に同意いただいたものとさせていただきます。
+      </ra-panel>
+      <center>
+        <div class="kiyaku_check">
+          <el-checkbox v-model="bind_params.isChecked">
+            利用規約、約款に同意する
+          </el-checkbox>
+        </div>
+      </center>
+    </div>
+    <div id="footerButton">
+      <ra-button @click="onClickBack" type="info" size="small"
+        >{{viewConst.ONCLICKBACK_BUTTON_CAPTION}}</ra-button
+      >
+      <ra-button @click="onClickRegist" type="primary" size="small" :disabled="!isKiyakuConfiermed"
+        >{{viewConst.ONCLICKREGIST_BUTTON_CAPTION}}</ra-button
+      >
+    </div>
+  </div>
+
+  <router-view></router-view>
+</div>

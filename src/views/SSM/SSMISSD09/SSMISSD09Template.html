@@ -1,0 +1,236 @@
+<div class="SSMISSD09">
+  <ro-message-guide></ro-message-guide>
+
+  <!-- 出荷人情報パネル -->
+  <tr>
+    <td class="panelLeft">
+      <ra-panel title="出荷人情報" ref="ref_validate1">
+      <p>
+        <font color="red">
+          ご連絡可能なメールアドレスの記載をお願いします。<br>
+          （ご出荷後、貨物についてお問い合わせさせていただく場合がございます）<br>
+        </font>
+      </p>
+      <br>
+        <div class="">
+          <sm-select-country
+            com-id="irai_country_cd"
+            caption="国名"
+            v-model="bind_params.model.model_shukka.irai_country_cd"
+            disabled
+            clearable
+          >
+          </sm-select-country>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai_yubin"
+            caption="郵便番号"
+            v-model="bind_params.model.model_shukka.irai_yubin"
+            validate="max:12|alpha_num"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+
+          <so-window
+            :visible.sync="yubinVisible"
+            :table="bind_params.result_model.grid_result_set"
+            :columnNames="columnNames"
+            :labeloption="labeloption"
+            :titledate="subtitle"
+            @click="onClickPlus"
+            @result="onClickPlusResult"
+            @closed="onClickPlusClosed"
+          ></so-window>
+        </div>
+
+        <div>
+          <rm-input
+            com-id="irai_shu_cd"
+            caption="州・省・県"
+            v-model="bind_params.model.model_shukka.irai_shu_cd"
+            validate="max:35|alpha_num_symbol"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai_toshi_nm"
+            caption="都市名"
+            v-model="bind_params.model.model_shukka.irai_toshi_nm"
+            validate="max:35|alpha_num_symbol"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai1_add"
+            caption="住所1"
+            v-model="bind_params.model.model_shukka.irai1_add"
+            validate="alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai2_add"
+            caption="住所2"
+            v-model="bind_params.model.model_shukka.irai2_add"
+            validate="alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai3_add"
+            caption="住所3"
+            v-model="bind_params.model.model_shukka.irai3_add"
+            validate="alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai1_nm"
+            caption="会社名"
+            v-model="bind_params.model.model_shukka.irai1_nm"
+            validate="alpha_num_symbol|max:60"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai2_nm"
+            caption="氏名"
+            v-model="bind_params.model.model_shukka.irai2_nm"
+            validate="alpha_num_symbol|max:45"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <div>
+          <rm-input
+            com-id="irai_mail"
+            caption="メールアドレス"
+            v-model="bind_params.model.model_shukka.irai_mail"
+            validate="mail_address|max:50"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+          </rm-input>
+        </div>
+        <!-- +81の部分は国番号のバインドを入れる想定 -->
+        <div>
+          <rm-input
+            com-id="irai_tel"
+            caption="電話番号"
+            v-model="bind_params.model.model_shukka.irai_tel"
+            :validate="'telcode|telmax:' + bind_params.model.model_shukka.irai_country_tel_cd"
+            :disabled="bind_params.model.readOnlyMode"
+            placeholder=""
+            clearable
+          >
+            <template slot="prepend" ref="irai_country_tel_cd">
+              <span v-text="bind_params.model.model_shukka.irai_country_tel_cd"></span>
+            </template>
+          </rm-input>
+        </div>
+        <div>
+          <sm-select com-id="iraitorokuno1_cd" caption="登録番号区分1" ref="iraitorokuno1_cd"
+            v-model="bind_params.model.model_shukka.iraitorokuno1_cd" kbnNm="torokutype_cmb"
+            :disabled="bind_params.model.readOnlyMode"
+            :validate="valiCheckTorokuNoKbn(bind_params.model.model_shukka.iraitorokuno1)" blankAble clearable filterable>
+          </sm-select>
+        </div>
+        <div>
+          <rm-input com-id="iraitorokuno1" caption="登録番号1" v-model="bind_params.model.model_shukka.iraitorokuno1"
+            :validate="valiCheckTorokuNo(bind_params.model.model_shukka.iraitorokuno1_cd)"
+            :disabled="disCheckOther(bind_params.model.model_shukka.iraitorokuno1_cd,bind_params.model.model_shukka.iraitorokuno1)||bind_params.model.readOnlyMode"
+            clearable>
+          </rm-input>
+        </div>
+        <div>
+          <sm-select com-id="iraitorokuno2_cd" caption="登録番号区分2" ref="iraitorokuno2_cd"
+            v-model="bind_params.model.model_shukka.iraitorokuno2_cd" kbnNm="torokutype_cmb"
+            :disabled="disCheckOther(bind_params.model.model_shukka.iraitorokuno1_cd,bind_params.model.model_shukka.iraitorokuno2_cd)||bind_params.model.readOnlyMode"
+            :validate="valiCheckTorokuNoKbn(bind_params.model.model_shukka.iraitorokuno2)" blankAble clearable filterable>
+          </sm-select>
+        </div>
+        <div>
+          <rm-input com-id="iraitorokuno2" caption="登録番号2" v-model="bind_params.model.model_shukka.iraitorokuno2"
+            :validate="valiCheckTorokuNo(bind_params.model.model_shukka.iraitorokuno2_cd)"
+            :disabled="disCheckOther(bind_params.model.model_shukka.iraitorokuno2_cd,bind_params.model.model_shukka.iraitorokuno2)||bind_params.model.readOnlyMode"
+            clearable>
+          </rm-input>
+        </div>
+        <div>
+          <sm-select com-id="iraitorokuno3_cd" caption="登録番号区分3" ref="iraitorokuno3_cd"
+            v-model="bind_params.model.model_shukka.iraitorokuno3_cd" kbnNm="torokutype_cmb"
+            :disabled="disCheckOther(bind_params.model.model_shukka.iraitorokuno2_cd,bind_params.model.model_shukka.iraitorokuno3_cd,)||bind_params.model.readOnlyMode"
+            :validate="valiCheckTorokuNoKbn(bind_params.model.model_shukka.iraitorokuno3)" blankAble clearable filterable>
+          </sm-select>
+        </div>
+        <div>
+          <rm-input com-id="iraitorokuno3" caption="登録番号3" v-model="bind_params.model.model_shukka.iraitorokuno3"
+            :validate="valiCheckTorokuNo(bind_params.model.model_shukka.iraitorokuno3_cd)"
+            :disabled="disCheckOther(bind_params.model.model_shukka.iraitorokuno3_cd,bind_params.model.model_shukka.iraitorokuno3)||bind_params.model.readOnlyMode"
+            clearable>
+          </rm-input>
+        </div>
+      </ra-panel>
+    </td>
+  </tr>
+  <tr>
+    <td class="panelCenter" colspan="2">
+      <ra-panel>
+        <div class="bottunRight">
+          <!-- 登録ボタン -->
+          <ra-button
+            @click="onClickRegist"
+            v-if="!bind_params.model.updateMode"
+            type="warning"
+            size="small"
+            >登録</ra-button
+          >
+          <!-- 更新ボタン -->
+          <ra-button
+            @click="onClickUpdate"
+            v-if="bind_params.model.updateMode"
+            :disabled="bind_params.model.readOnlyMode"
+            type="warning"
+            size="small"
+            >更新</ra-button
+          >
+        </div>
+      </ra-panel>
+    </td>
+  </tr>
+  <tr>
+    <td class="panelCenter" colspan="2">
+      <router-view></router-view>
+    </td>
+  </tr>
+</div>

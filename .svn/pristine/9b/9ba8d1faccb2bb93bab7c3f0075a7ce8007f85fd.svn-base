@@ -1,0 +1,34 @@
+@charset "utf-8";
+
+.dataLeft {
+  white-space: nowrap;
+  min-width: 550px;
+}
+
+.dataRight {
+  white-space: nowrap;
+  min-width: 550px;
+}
+
+.bottunRight {
+  text-align: right;
+}
+.buttontable {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.title-size{
+  width: 4em;
+  height: 2em;
+}
+
+.pupup-button {
+  width: 3em;
+  height: 1.5em;
+  margin-right: 30px;
+}

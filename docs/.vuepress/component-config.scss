@@ -1,0 +1,7 @@
+/**
+ * for RoFooter
+ * Footerはアプリ側では高さを決め打ちしているので、ガイド用に上書き
+ */
+footer#footer {
+  top: 10px !important;
+}

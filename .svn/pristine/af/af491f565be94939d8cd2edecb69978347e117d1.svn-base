@@ -1,0 +1,165 @@
+<!--
+*************************************************************************************
+* Copyright(C) 1999- Sagawa Express Co.,Ltd. All rights reserved.
+* Copyright(C) 2010- SG SYSTEMS Co.,Ltd. All rights reserved.
+* Copyright(C) 2019 by Future Architect, Inc. Japan
+* 画面ID:NSISBO01-D01
+* 画面名: 都道府県選択（ポップアップ）
+* 作成者: XXX
+* 更新履歴:
+* 更新日付 更新者 更新内容
+* 201X/XX/XX XXX 設計書-新規作成
+*
+*************************************************************************************
+-->
+<!-- TODO 1. 設計書の画面イメージ通りに、画面項目にスタイルを当ててください（詳しくはCSSグリッドのガイドを参考に） -->
+<!-- TODO 2. ラベルなしの項目については:has-label=falseを追記してください -->
+<!-- TODO 3. 整数部桁数のバリデーションは、『その桁数以下』(max)として自動生成されています -->
+<!-- 『8桁のみ許す』、『6桁から8桁を許す』などのバリデーションはガイドを参考に手動実装してください -->
+<!-- TODO 4. その他TODOになっているものについて開発を行ってください -->
+<div class="NSISBO01D01">
+  <!-- 都道府県選択パネル -->
+  <ra-popup :visible.sync="isVisibleComputed" title="都道府県選択">
+    <!-- エラーメッセージガイドの表示 -->
+    <ro-message-guide></ro-message-guide>
+    <div class="tdfknPopup">
+      <!-- 北海道 -->
+      <div class="hokkaidoGrp">
+        <rm-checkbox-group
+          com-id="hokkaidoGrp"
+          caption="北海道"
+          v-model="bind.hokkaidoGrp"
+          kbn-nm="TDFKNKBN_HOKKAIDO"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 北東北 -->
+      <div class="kitaTohokuGrp">
+        <rm-checkbox-group
+          com-id="kitaTohokuGrp"
+          caption="北東北"
+          v-model="bind.kitaTohokuGrp"
+          kbn-nm="TDFKNKBN_KITATOHOKU"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 南東北 -->
+      <div class="minamiTohokuGrp">
+        <rm-checkbox-group
+          com-id="minamiTohokuGrp"
+          caption="南東北"
+          v-model="bind.minamiTohokuGrp"
+          kbn-nm="TDFKNKBN_MINAMITOHOKU"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 関東 -->
+      <div class="kantoGrp">
+        <rm-checkbox-group
+          com-id="kantoGrp"
+          caption="関東"
+          v-model="bind.kantoGrp"
+          kbn-nm="TDFKNKBN_KANTO"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 信越 -->
+      <div class="shinetsuGrp">
+        <rm-checkbox-group
+          com-id="shinetsuGrp"
+          caption="信越"
+          v-model="bind.shinetsuGrp"
+          kbn-nm="TDFKNKBN_SHINETSU"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 東海 -->
+      <div class="tokaiGrp">
+        <rm-checkbox-group
+          com-id="tokaiGrp"
+          caption="東海"
+          v-model="bind.tokaiGrp"
+          kbn-nm="TDFKNKBN_TOKAI"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 北陸 -->
+      <div class="hokurikuGrp">
+        <rm-checkbox-group
+          com-id="hokurikuGrp"
+          caption="北陸"
+          v-model="bind.hokurikuGrp"
+          kbn-nm="TDFKNKBN_HOKURIKU"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 近畿 -->
+      <div class="kinkiGrp">
+        <rm-checkbox-group
+          com-id="kinkiGrp"
+          caption="近畿"
+          v-model="bind.kinkiGrp"
+          kbn-nm="TDFKNKBN_KINKI"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 中国 -->
+      <div class="cyugokuGrp">
+        <rm-checkbox-group
+          com-id="cyugokuGrp"
+          caption="中国"
+          v-model="bind.cyugokuGrp"
+          kbn-nm="TDFKNKBN_CYUGOKU"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 四国 -->
+      <div class="shikokuGrp">
+        <rm-checkbox-group
+          com-id="shikokuGrp"
+          caption="四国"
+          v-model="bind.shikokuGrp"
+          kbn-nm="TDFKNKBN_SHIKOKU"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 北九州 -->
+      <div class="kitakyushuShuGrp">
+        <rm-checkbox-group
+          com-id="kitakyushuShuGrp"
+          caption="北九州"
+          v-model="bind.kitakyushuShuGrp"
+          kbn-nm="TDFKNKBN_KITAKYUSYU"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 南九州 -->
+      <div class="minamiKyusyuGrp">
+        <rm-checkbox-group
+          com-id="minamiKyusyuGrp"
+          caption="南九州"
+          v-model="bind.minamiKyusyuGrp"
+          kbn-nm="TDFKNKBN_MINAMIKYUSYU"
+        ></rm-checkbox-group>
+      </div>
+
+      <!-- 沖縄 -->
+      <div class="okinawaGrp">
+        <rm-checkbox-group
+          com-id="okinawaGrp"
+          caption="沖縄"
+          v-model="bind.okinawaGrp"
+          kbn-nm="TDFKNKBN_OKINAWA"
+        ></rm-checkbox-group>
+      </div>
+    </div>
+    <!-- ポップアップフッタパネル -->
+    <template #footer>
+      <!-- 閉じるボタン -->
+      <ra-button @click="cansel">閉じる</ra-button>
+
+      <!-- 決定ボタン -->
+      <ra-button @click="closePopup">決定</ra-button>
+    </template>
+  </ra-popup>
+</div>

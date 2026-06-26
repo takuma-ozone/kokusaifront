@@ -1,0 +1,56 @@
+{
+  "at": null,
+  "data": {
+    "taisyoSyuDSijiMotoOption": [
+      {
+        "lblNm": "SGシステム株式会社",
+        "optionTi": 0
+      },
+      {
+        "lblNm": "SGホールディングス株式会社",
+        "optionTi": 1
+      },
+      {
+        "lblNm": "フューチャーアーキテクト株式会社",
+        "optionTi": 2
+      }
+    ],
+    "otdkSkGrpNmOption": [
+      {
+        "lblNm": "フューチャーアーキテクト株式会社",
+        "optionTi": 0
+      },
+      {
+        "lblNm": "フューチャー株式会社",
+        "optionTi": 1
+      },
+      {
+        "lblNm": "フューチャー株式会社",
+        "optionTi": 2
+      }
+    ],
+    "svcBetuOption": [
+      {
+        "lblNm": "全て（大口ハンガー便以外）",
+        "optionTi": 0
+      },
+      {
+        "lblNm": "飛脚特定信書便",
+        "optionTi": 1
+      },
+      {
+        "lblNm": "精密機器輸送サービス",
+        "optionTi": 2
+      },
+      {
+        "lblNm": "大型家具家電設置輸送",
+        "optionTi": 3
+      },
+      {
+        "lblNm": "小口ハンガー便",
+        "optionTi": 4
+      }
+    ],
+    "gyomuYmd": "2021/10/22"
+  }
+}

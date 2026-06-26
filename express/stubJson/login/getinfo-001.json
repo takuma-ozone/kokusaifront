@@ -1,0 +1,29 @@
+{
+  "code": 0,
+  "data": {
+    "wtsUserNo": "123456789012345",
+    "userId": "0000000001",
+    "tmiseCd": "9999",
+    "tmiseCd2": "99",
+    "email": "test@example.com",
+    "corpNm": "Test Corp.",
+    "corpKnm": "てすと",
+    "bushoNm": "部署",
+    "userSei": "佐川",
+    "userMei": "太郎",
+    "userKsei": "さがわ",
+    "userKmei": "たろう",
+    "zip": "1234567",
+    "todouNm": "試験県",
+    "sityosonNm": "試験市",
+    "addr1": "試験町",
+    "addr2": "試験",
+    "addr3": "1-1",
+    "tel1": "03",
+    "tel2": "1234",
+    "tel3": "5678",
+    "fax1": "03",
+    "fax2": "4321",
+    "fax3": "8765"
+  }
+}

@@ -1,0 +1,73 @@
+@charset "utf-8";
+
+.dataLeft {
+  white-space: nowrap;
+  min-width: 550px;
+}
+
+.dataRight {
+  white-space: nowrap;
+  min-width: 550px;
+}
+
+.linkRight {
+  left: 50px;
+  .el-link {
+    font-size: 14px;
+  }
+}
+
+.linkRightFare {
+  margin-top: 10px;
+  left: 50px;
+  .el-link {
+    font-size: 14px;
+  }
+}
+
+.signborder {
+  border: 1px solid;
+}
+
+.riyou_joukyou {
+  margin-top: 10px;
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.riyou_msg {
+  color: red;
+}
+
+.checkboxRight {
+  left: 50px;
+}
+
+.label-uploadPdf {
+  font-size: 14px !important;
+}
+
+.upload {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.uploadButton {
+  margin-top: 20px;
+}
+
+.marginB {
+  margin-bottom: 6px;
+}
+
+.marginR {
+  margin-bottom: 6px;
+  color: red;
+}
+
+.ininjouImg {
+  width: 45%;
+  height: auto;
+}

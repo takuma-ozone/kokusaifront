@@ -1,0 +1,194 @@
+<div class="SSMISSD06">
+  <ro-message-guide></ro-message-guide>
+  <div v-for="option_error in bind_params.option_errors" :key="option_error">
+    <div class="messageGuide" v-if="bind_params.option_errors !== ''">
+      <font-awesome-icon icon="exclamation-circle"></font-awesome-icon>
+      <span class="errorOption">{{option_error}}</span>
+    </div>
+  </div>
+  <tr>
+    <td>
+      <ra-panel class="panelRight" title="品目情報" ref="ref_validate1">
+        <!-- 品目追加ボタン -->
+        <div>
+          <ra-button
+            @click="clickProliferation"
+            v-if="!updateMode"
+            type="info"
+            size="small"
+          > 品目追加
+          </ra-button>
+          <font size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内容に不足等ある場合、送り状等の再作成が必要になることがあります。</font>
+        </div>
+        <br />
+        <div>
+          品目詳細には１品目のみ記載いただき、具体的な品名と材質の入力をお願いします。<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;NG例&nbsp;～Parts（具体的でない）、Clothes（総称）、ABC123（型番のみ）など</font>
+          <br />
+          EU向け貨物は「HSコード６桁」の記載もあわせてお願いいたします。
+          <br />
+          HSコードは税関ホームページの輸出統計品目表（
+          <a
+        href="https://www.customs.go.jp/yusyutu/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >
+          輸出統計品目表 : 税関 Japan Customs
+          </a>
+           ）で検索可能です。
+          <br />
+            （例）Textile / Woven / Cotton 70% Polyester 30%<br />
+            （例）Screw / Stainless Steel<br />
+            （例）Pen Case / ABS<br />
+        </div>
+        <div class="tankaMessage">
+            贈答品等の場合でも商品単価を入力してください。0円では申告できません。（書類を除く）<br />
+        </div>
+        <br />
+        <div style="margin-bottom: 10px;">
+          <rm-input-read-only
+            com-id="sumKingaku"
+            labelWidth="2"
+            caption="総商品金額"
+            :value="sumKingaku"
+          ></rm-input-read-only>
+          総商品金額 {{sumKingaku}} ({{bind_params.model_shukka.invoice_cur_text}})
+          <rm-input-read-only
+            com-id="netw"
+            labelWidth="2"
+            caption="総商品重量"
+            :value="netw"
+            validate="max_value:500"
+          ></rm-input-read-only
+          >総商品重量 {{netw}} kg
+          <rm-input-read-only
+            com-id="grossw"
+            labelWidth="2"
+            caption="総梱包込商品重量"
+            :value="grossw"
+            validate="max_value:500"
+          >
+          </rm-input-read-only>
+          総梱包込商品重量　{{grossw}} kg
+        </div>
+        <div v-for="add in bind_params.panel" :key="add.key">
+          <div
+            class="divMulti"
+            style="padding: 10px; margin-bottom: 15px; border: 1px solid #FFFFFF; border-radius: 10px; background-color: #eef1f5;"
+          >
+            <div>
+              No.{{add.key}}
+            </div>
+            <tr>
+              <!--文字数はDHL入力文字数に合わせる制限を掛ける-->
+              <td colspan="1">
+                  <rm-input
+                  :com-id="com('item_nm', add)"
+                  caption="品目詳細"
+                  v-model="bind_params.model[add.key-1].item_nm"
+                  validate="required|max:170|alpha_num_symbol"
+                  labelWidth="5"
+                  inputWidth="10"
+                  placeholder="①具体的な品名②材質③使用用途 など (１品目ごとに記載)"
+                  clearable
+                >
+                </rm-input>
+              </td>
+              <td>
+                <rm-input
+                  :com-id="com('item_kosu', add)"
+                  caption="数量"
+                  v-model="bind_params.model[add.key-1].item_kosu"
+                  validate="required|numeric|max:5|between:0,99999"
+                  labelWidth="2"
+                  inputWidth="1"
+                  clearable
+                >
+                </rm-input>
+
+                <sm-select
+                  :com-id="com('item_unit', add)"
+                  caption="単位"
+                  ref="item_unit"
+                  v-model="bind_params.model[add.key-1].item_unit"
+                  validate="required"
+                  kbnNm="itemunit_cmb"
+                  labelWidth="3"
+                  selectWidth="3"
+                  filterable
+                >
+                </sm-select>
+              </td>
+
+              <td>
+                <rm-input
+                  :com-id="com('item_price', add)"
+                  :caption="'単価(' + bind_params.model_shukka.invoice_cur_text + ')'"
+                  v-model="bind_params.model[add.key-1].item_price"
+                  validate="required|max:11|decimal:2|min_value:0|max_value:99999999.99"
+                  labelWidth="5"
+                  inputWidth="6"
+                  placeholder="0円では申告できません(贈答品含む)"
+                  clearable
+                >
+                </rm-input>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <rm-input
+                  :com-id="com('n_netweight', add)"
+                  caption="商品重量(kg)"
+                  v-model="bind_params.model[add.key-1].n_netweight"
+                  validate="required|max:5|decimal:1|min_value:0|max_value:999.9"
+                  labelWidth="5"
+                  inputWidth="2"
+                  clearable
+                >
+                </rm-input>
+
+                <rm-input
+                  :com-id="com('n_grossweight', add)"
+                  caption="梱包込商品重量(kg)"
+                  v-model="bind_params.model[add.key-1].n_grossweight"
+                  validate="required|max:5|decimal:1|min_value:0|max_value:999.9"
+                  labelWidth="9"
+                  inputWidth="2"
+                  clearable
+                >
+                </rm-input>
+
+                <sm-select-country
+                  :com-id="com('item_country', add)"
+                  caption="原産国"
+                  ref="item_country"
+                  v-model="bind_params.model[add.key-1].item_country"
+                  validate="required"
+                  labelWidth="5"
+                  filterable
+                >
+                </sm-select-country>
+              </td>
+            </tr>
+            <br />
+            <div class="bottunRight">
+              <ra-button
+                @click="onClickDelete(add.key - 1)"
+                type="info"
+                size="small"
+                v-if="bind_params.panel.length !== 1"
+                >削除</ra-button
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="bottunRight">
+          <!-- 登録ボタン -->
+          <ra-button @click="onClickRegist" type="warning" size="small">登録</ra-button>
+          <ra-button @click="onClickBack" type="info" size="small">戻る</ra-button>
+        </div>
+      </ra-panel>
+    </td>
+  </tr>
+  <router-view></router-view>
+</div>

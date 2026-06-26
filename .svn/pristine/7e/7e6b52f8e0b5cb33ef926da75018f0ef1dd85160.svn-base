@@ -1,0 +1,18 @@
+{
+  "editor.renderWhitespace": "all",
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "files.eol": "\r\n",
+  "eslint.enable": true, // ESLint有効化
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+  // 適応するファイルタイプを決定
+  "eslint.validate": ["javascript", "vue"],
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

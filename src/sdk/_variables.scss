@@ -1,0 +1,48 @@
+/**
+ * アプリ共通変数
+ */
+$--sagawa-blue: #3b499f;
+$--content-theme-color: #5866c2;
+$--body-background-color: #fafafa;
+
+/**
+ * Form Component
+ */
+$--form-font-size: 12px;
+$--form-height: 20px;
+$--form-width-standard: 40px;
+$--form-width-difference: 40px;
+
+/**
+ * ra-label
+ */
+$--label-margin: 0 10px 0 0;
+$--label-width-standard: 20px;
+$--label-width-difference: 20px;
+
+/**
+ * rm-list
+ */
+$--list-width-standard: 20px;
+$--list-width-difference: 30px;
+
+/**
+ * ro-footer
+ */
+$--footer-button-nothing-color: #e6e6e6;
+
+/**
+ * ro-message-guide
+ */
+$--message-guide-font-color: #ff0080;
+$--message-guide-background-color: #fbeff5;
+// $--message-guide-background-color: white;
+$--message-guide-height: 20px;
+$--message-guide-font-size: 11px;
+
+/**
+ * Validation
+ */
+$--is-invalid-border-color: #f781be;
+$--is-invalid-background-color: #fbeff5;
+$--aster-icon-color: #ff0080;

@@ -1,0 +1,283 @@
+<div class="SSMISSD07">
+  <ro-message-guide></ro-message-guide>
+  <div v-for="option_error in bind_params.option_errors" :key="option_error">
+    <div class="messageGuide" v-if="bind_params.option_errors !== ''">
+      <font-awesome-icon icon="exclamation-circle"></font-awesome-icon>
+      <span class="errorOption">{{option_error}}</span>
+    </div>
+  </div>
+  <tr>
+    <td>
+      <!-- 出荷人情報パネル -->
+      <ra-panel class="panelRight" title="関係者情報" ref="ref_validate1">
+        <!-- 関係者追加ボタン -->
+        <ra-button @click="clickProliferation" type="info" size="small">関係者追加</ra-button>
+
+        <div v-for="i in bind_params.panel" :key="i.key">
+          <div
+            class="divMulti"
+            style="padding: 10px; margin-bottom: 10px; border: 1px solid #FFFFFF; border-radius: 10px; background-color: #eef1f5;"
+          >
+            <tr>
+              <td>
+                <div>
+                  No.{{i.key}}
+                </div>
+                <tr>
+                  <td colspan="1">
+                    <sm-select
+                      :com-id="com('person_type_cd', i)"
+                      caption="関係性"
+                      ref="person_type_cd"
+                      v-model="bind_params.model[i.key-1].person_type_cd"
+                      validate="required"
+                      kbnNm="person_cmb"
+                      selectWidth="5"
+                      filterable
+                    >
+                    </sm-select>
+                  </td>
+                  <td colspan="1">
+                    <sm-select-country
+                      :com-id="com('person_country_cd',i)"
+                      caption="国名"
+                      ref="person_country_cd"
+                      v-model="bind_params.model[i.key - 1].person_country_cd"
+                      validate="required"
+                      filterable
+                      selectWidth="5"
+                    ></sm-select-country>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <rm-input
+                      :com-id="com('person_yubin',i)"
+                      caption="郵便番号"
+                      v-model="bind_params.model[i.key - 1].person_yubin"
+                      validate="max:12|alpha_num"
+                      inputWidth="5"
+                      clearable
+                    >
+                    </rm-input>
+                    <so-window
+                      :visible.sync="yubinVisible"
+                      :table="bind_params.result_model.grid_result_set"
+                      :columnNames="columnNames"
+                      :labeloption="labeloption"
+                      :titledate="subtitle"
+                      @click="onClickPlus(i.key - 1)"
+                      @result="onClickPlusResult"
+                      @closed="onClickPlusClosed"
+                    ></so-window>
+                  </td>
+
+                  <td>
+                    <rm-input
+                      :com-id="com('person_shu_cd',i)"
+                      caption="州・省・県"
+                      v-model="bind_params.model[i.key - 1].person_shu_cd"
+                      validate="max:35|alpha_num_symbol"
+                      inputWidth="5"
+                      clearable
+                    ></rm-input>
+                  </td>
+                  <td>
+                    <rm-input
+                      :com-id="com('person_toshi_nm',i)"
+                      caption="都市名"
+                      v-model="bind_params.model[i.key - 1].person_toshi_nm"
+                      validate="max:35|alpha_num_symbol|required"
+                      inputWidth="5"
+                      clearable
+                    ></rm-input>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <rm-input
+                      :com-id="com('person1_add',i)"
+                      caption="住所1"
+                      v-model="bind_params.model[i.key - 1].person1_add"
+                      validate="required|alpha_num_symbol|max:45"
+                      inputWidth="5"
+                      clearable
+                    ></rm-input>
+                  </td>
+                  <td>
+                    <rm-input
+                      :com-id="com('person2_add',i)"
+                      caption="住所2"
+                      v-model="bind_params.model[i.key - 1].person2_add"
+                      validate="alpha_num_symbol|max:45"
+                      inputWidth="5"
+                      clearable
+                    ></rm-input>
+                  </td>
+                  <td>
+                    <rm-input
+                      :com-id="com('person3_add',i)"
+                      caption="住所3"
+                      v-model="bind_params.model[i.key - 1].person3_add"
+                      validate="alpha_num_symbol|max:45"
+                      inputWidth="5"
+                      clearable
+                    ></rm-input>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <rm-input
+                      :com-id="com('person1_nm',i)"
+                      caption="会社名"
+                      v-model="bind_params.model[i.key - 1].person1_nm"
+                      validate="required|alpha_num_symbol|max:60"
+                      inputWidth="5"
+                      clearable
+                    ></rm-input>
+                  </td>
+                  <td>
+                    <rm-input
+                      :com-id="com('person2_nm',i)"
+                      caption="氏名"
+                      v-model="bind_params.model[i.key - 1].person2_nm"
+                      validate="required|alpha_num_symbol|max:45"
+                      inputWidth="5"
+                      clearable
+                    ></rm-input>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <rm-input
+                      :com-id="com('person_mail',i)"
+                      caption="メールアドレス"
+                      v-model="bind_params.model[i.key - 1].person_mail"
+                      validate="required|mail_address|max:50"
+                      inputWidth="5"
+                      clearable
+                    ></rm-input>
+                  </td>
+                  <td>
+                    <rm-input
+                      :com-id="com('person_tel',i)"
+                      caption="電話番号"
+                      v-model="bind_params.model[i.key - 1].person_tel"
+                      :validate="'required|telcode|telmax:' + getTelCode(i.key - 1)"
+                      inputWidth="5"
+                      clearable
+                    >
+                      <template slot="prepend" ref="person_country_tel">
+                        <span v-text="getTelCode(i.key - 1)"></span>
+                      </template>
+                    </rm-input>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <sm-select
+                      :com-id="com('torokuno1_cd',i)"
+                      caption="登録番号区分1"
+                      ref="torokuno1_cd"
+                      v-model="bind_params.model[i.key - 1].torokuno1_cd"
+                      validate="max:3|alpha_num"
+                      kbnNm="torokutype_cmb"
+                      filterable
+                      clearable
+                      blankAble
+                      selectWidth="5"
+                    >
+                    </sm-select>
+                  </td>
+                  <td>
+                    <sm-select
+                      :com-id="com('torokuno2_cd',i)"
+                      caption="登録番号区分2"
+                      ref="torokuno2_cd"
+                      v-model="bind_params.model[i.key - 1].torokuno2_cd"
+                      :disabled="disCheckOther(bind_params.model[i.key - 1].torokuno1_cd,bind_params.model[i.key - 1].torokuno2_cd)"
+                      kbnNm="torokutype_cmb"
+                      filterable
+                      clearable
+                      blankAble
+                      selectWidth="5"
+                    >
+                    </sm-select>
+                  </td>
+                  <td>
+                    <sm-select
+                      :com-id="com('torokuno3_cd',i)"
+                      caption="登録番号区分3"
+                      ref="torokuno3_cd"
+                      v-model="bind_params.model[i.key - 1].torokuno3_cd"
+                      :disabled="disCheckOther(bind_params.model[i.key - 1].torokuno2_cd,bind_params.model[i.key - 1].torokuno3_cd)"
+                      kbnNm="torokutype_cmb"
+                      filterable
+                      clearable
+                      blankAble
+                      selectWidth="5"
+                    >
+                    </sm-select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <rm-input
+                      :com-id="com('torokuno1',i)"
+                      caption="登録番号1"
+                      v-model="bind_params.model[i.key - 1].torokuno1"
+                      :disabled="disCheckOther(bind_params.model[i.key - 1].torokuno1_cd,bind_params.model[i.key - 1].torokuno1)"
+                      :validate="valiCheckTorokuNo(bind_params.model[i.key - 1].torokuno1_cd)"
+                      inputWidth="5"
+                      clearable
+                    ></rm-input>
+                  </td>
+                  <td>
+                    <rm-input
+                      :com-id="com('torokuno2',i)"
+                      caption="登録番号2"
+                      v-model="bind_params.model[i.key - 1].torokuno2"
+                      :disabled="disCheckOther(bind_params.model[i.key - 1].torokuno2_cd,bind_params.model[i.key - 1].torokuno2)"
+                      :validate="valiCheckTorokuNo(bind_params.model[i.key - 1].torokuno2_cd)"
+                      inputWidth="5"
+                      clearable
+                    ></rm-input>
+                  </td>
+                  <td>
+                    <rm-input
+                      :com-id="com('torokuno3',i)"
+                      caption="登録番号3"
+                      v-model="bind_params.model[i.key - 1].torokuno3"
+                      :disabled="disCheckOther(bind_params.model[i.key - 1].torokuno3_cd,bind_params.model[i.key - 1].torokuno3)"
+                      :validate="valiCheckTorokuNo(bind_params.model[i.key - 1].torokuno3_cd)"
+                      inputWidth="5"
+                      clearable
+                    ></rm-input>
+                  </td>
+                </tr>
+              </td>
+            </tr>
+
+            <br />
+            <div class="bottunRight">
+              <ra-button
+                @click="onClickDelete(i.key - 1)"
+                type="info"
+                size="small"
+                v-if="bind_params.model.length !== 1"
+                >削除</ra-button
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="bottunRight">
+          <!-- 登録ボタン -->
+          <ra-button @click="onClickRegist" type="warning" size="small">登録</ra-button>
+          <ra-button @click="onClickBack" type="info" size="small">戻る</ra-button>
+        </div>
+      </ra-panel>
+    </td>
+  </tr>
+  <router-view></router-view>
+</div>

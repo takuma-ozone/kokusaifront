@@ -1,0 +1,42 @@
+@charset "utf-8";
+
+.divMulti {
+  white-space: nowrap;
+  min-width: 1300px;
+}
+
+.panelRight {
+  white-space: nowrap;
+  min-width: 1400px;
+}
+
+.bottunRight {
+  text-align: right;
+}
+
+.dataLeft {
+  white-space: nowrap;
+  min-width: 410px;
+}
+
+.dataRight {
+  white-space: nowrap;
+  min-width: 375px;
+}
+
+.tableSpace {
+  border-collapse: separate;
+}
+
+.messageGuide {
+  background-color: #fbeff5;
+  height: 20px;
+  font-size: 11px;
+  margin-left: 5px;
+  color: #ff0080;
+}
+
+.errorOption {
+  margin: 0 3px;
+  padding: 0 3px;
+}

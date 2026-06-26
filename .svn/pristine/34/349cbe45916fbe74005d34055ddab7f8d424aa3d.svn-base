@@ -1,0 +1,179 @@
+<div class="SAMPLE" id="SAMPLE">
+  <!-- エラーメッセージガイドの表示 -->
+  <ro-message-guide></ro-message-guide>
+  <!-- 検索条件パネル -->
+  <ra-panel :is-open.sync="command.isPanelOpen" title="検索条件" ref="searchCondition" openable>
+    <div class="searchCondition">
+      <!--　登録日付from to -->
+      <!--　from toは別でコンポーネントがあります。-->
+      <div class="syuDd">
+        <rm-date-picker-range
+        :value-from.sync="bind.searchCondition.D_TOROKU_FROM"
+        :value-to.sync="bind.searchCondition.D_TOROKU_TO"
+        caption="登録日付"
+        com-id="d_toroku"
+        picker-width="3"
+        validate-from="required"
+        validate-to="required"
+        label-width="4"
+        ></rm-date-picker-range>
+      </div>
+
+      <!-- サンプルID -->
+      <div class="otdkSkJsy">
+        <rm-input
+          com-id="otdkSkJsy"
+          caption="サンプルID"
+          v-model="bind.searchCondition.sampleId"
+          validate="max:48"
+          input-width="7"
+          label-width="4"
+          type="tel"
+        >
+        <template slot="prepend">+81</template>
+      </rm-input>
+      </div>
+
+      <!-- サンプル名称 -->
+      <div class="testname">
+        <rm-input
+          com-id="testname"
+          caption="サンプル名称"
+          v-model="bind.searchCondition.sampleNm"
+          validate="max:48"
+          input-width="7"
+          label-width="4"
+        >
+        <span slot="prefix">+81</span>
+      </rm-input>
+      </div>
+
+            <!-- 絞り込み対応プルダウン -->
+      <div class="sampleselect">
+        <sm-select-country
+          com-id="sampleselect"
+          caption="絞込プルダウン"
+          v-model="bind.searchCondition.sampleSelect"
+          label-width="4"
+          filterable
+        >
+      </sm-select-country>
+      </div>
+
+      <!-- 処理ボタン -->
+      <div class="buttons">
+        <!-- 検索ボタン -->
+        <ra-button @click="clickSearch" size="small" type="primary">検索</ra-button>
+        <!-- 条件クリアボタン -->
+        <ra-button @click="clearForm" size="small" type="info">クリア</ra-button>
+        <!-- 新規登録画面遷移ボタン-->
+        <ra-button @click="clickChild" size="small" type="success">新規登録</ra-button>
+        <!-- メニュー表示ボタン-->
+        <ra-button @click="clickMenu" size="small" type="warning">メニュー切替</ra-button>
+      </div>
+    </div>
+  </ra-panel>
+
+  <ra-panel title="メッセージ表示">
+    <div class="buttons">
+      <!-- 検索ボタン -->
+      <ra-button @click="clickAlert" size="small" type="primary">アラート</ra-button>
+      <!-- 条件クリアボタン -->
+      <ra-button @click="clickConfirm" size="small" type="info">確認</ra-button>
+      <!-- 新規登録画面遷移ボタン-->
+      <ra-button @click="clickPrompt" size="small" type="success">値確認</ra-button>
+    </div>
+  </ra-panel>
+
+  <ra-panel title="CSV取込">
+    <form method="post" enctype="multipart/form-data">
+      <sm-import-csv></sm-import-csv>
+    </form>
+  </ra-panel>
+
+  <ra-panel title="テスト用">
+    <ra-button @click="clickProliferation" size="small" type="danger">増殖</ra-button>
+    <div v-for="test in bind.tests" :key="test.key">
+    <rm-input
+      com-id="testa"
+      caption="テストA"
+      v-model="test.a"
+      validate="max:48"
+      input-width="7"
+      label-width="4"
+      >
+    </rm-input>
+    <rm-input
+      com-id="testb"
+      caption="テストB"
+      v-model="test.b"
+      validate="max:48"
+      input-width="7"
+      label-width="4"
+      >
+    </rm-input>
+    </div>
+  </ra-panel>
+
+  <!-- 検索結果パネル -->
+  <ra-panel title="検索結果">
+    <div class="searchResult">
+
+      <sm-pagination
+        :total="total"
+        :page.sync="tablePage.currentPage"
+        :limit.sync="tablePage.pageSize"
+        @pagination="handlePaging"
+        small
+      ></sm-pagination>
+      <!-- テーブル -->
+      <vxe-table
+        ref="xTable"
+        :height="tHeight"
+        show-overflow
+        :data.sync="tablePage.displayList"
+        :mouse-config="{selected: true}"
+        :sort-config="{sortMethod: sort}"
+        :keyboard-config="{isArrow: true, isTab: true}"
+      >
+        <vxe-table-column title="編集" width="50" show-overflow>
+          <template v-slot="{ row }">
+            <vxe-button type="text" @click="editEvent(row)"
+              ><i class="el-icon-edit"></i
+            ></vxe-button>
+          </template>
+        </vxe-table-column>
+
+        <vxe-table-column field="sample_id" width="120" title="サンプルID" sortable>
+        </vxe-table-column>
+        <vxe-table-column
+          field="sample_nm"
+          width="120"
+          title="サンプル名"
+          sortable
+        ></vxe-table-column>
+        <vxe-table-column field="d_toroku" width="190" title="登録日時" sortable></vxe-table-column>
+        <vxe-table-column
+          field="torokuuser"
+          width="120"
+          title="登録ユーザ"
+          sortable
+        ></vxe-table-column>
+        <vxe-table-column
+          field="d_koshin"
+          width="190"
+          title="最終更新日時"
+          sortable
+        ></vxe-table-column>
+        <vxe-table-column
+          field="koshinuser"
+          width="120"
+          title="最終更新ユーザ"
+          sortable
+        ></vxe-table-column>
+      </vxe-table>
+    </div>
+  </ra-panel>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><ra-button @click="onClickTopView">画面topView</ra-button>
+  <router-view @return="onReturn"></router-view>
+</div>

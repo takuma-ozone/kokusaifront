@@ -1,0 +1,26 @@
+<div class="SSMISRD06">
+  <div class="gridContainer">
+    <el-header id="headerArea" height="50px">
+      <div class="header">
+        <img src="../../../assets/SG_Logo.png" class="image-logo1" />
+        <span class="display-split">|</span>
+        <span class="display-title">{{ this.$route.meta.title }}</span>
+      </div>
+    </el-header>
+    <ro-message-guide id="msgArea"></ro-message-guide>
+    <!-- パネル -->
+    <div id="registErrorPanel">
+      <ra-panel :title="viewConst.PANEL_TITLE" ref="ref_validate1">
+        大変申し訳ございませんがエラーが発生しました。<br />
+        <br />
+        {{this.bind_params.model.errormsg}}
+        <br />
+        お手数をおかけしますが、担当営業所へご連絡ください。
+      </ra-panel>
+    </div>
+
+    <div id="footerButton"></div>
+  </div>
+
+  <router-view></router-view>
+</div>
