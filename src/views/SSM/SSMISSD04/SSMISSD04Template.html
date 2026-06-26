@@ -45,7 +45,7 @@
         <ra-button class="pupup-button" type="primary" @click="closeEikokuPopup">閉じる</ra-button>
       </template>
     </ra-popup>
-
+    
     <!--書類発送ポップアップ-->
     <ra-popup :visible.sync="command.isShoruiPopupOpen" title="書類の発送について" @close="closeShoruiPopup" width="800px">
       <el-header id="headerArea" height="400px">
@@ -386,11 +386,7 @@
               @result="onClickPlusResult"
               @closed="onClickPlusClosed">
             </so-window>
-              &emsp;英国の郵便番号入力方法は
-            <ra-button
-               type="text" @click="openEikokuPopup">
-               こちら
-            </ra-button>
+           
            </div>
 
          <div>
