@@ -34,8 +34,6 @@
       </template>
     </ra-popup>
 
-
-
   <div v-for="error in bind_params.model.errors" :key="error">
     <div class="messageGuide" v-if="bind_params.model.errors !== ''">
       <font-awesome-icon icon="exclamation-circle"></font-awesome-icon>
@@ -364,9 +362,7 @@
               @result="onClickPlusResult"
               @closed="onClickPlusClosed">
             </so-window>
-           
            </div>
-
          <div>
           <rm-input
             com-id="otodoke_shu_cd"
