@@ -829,23 +829,6 @@ export default {
       this.command.isDirectPopupOpen = true;
     },
 
-    //英国郵便ポップアップ閉じる
-    closeEikokuPopup() {
-      this.command.isEikokuPopupOpen = false;
-    },
-    //英国郵便ポップアップ開く
-    openEikokuPopup() {
-      this.command.isEikokuPopupOpen = true;
-    },
-
-    //書類発送ポップアップ閉じる
-    closeShoruiPopup() {
-      this.command.isShoruiPopupOpen = false;
-    },
-    //書類発送ポップアップ開く
-    openShoruiPopup() {
-      this.command.isShoruiPopupOpen = true;
-    },
     /////////////////
     //郵便番号
     /////////////////

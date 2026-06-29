@@ -10,8 +10,6 @@ export default {
   command: {
     isPopupOpen: false,
     isDirectPopupOpen: false,
-    isEikokuPopupOpen: false,
-    isShoruiPopupOpen: false,
   },
 
   //バインド用モデル

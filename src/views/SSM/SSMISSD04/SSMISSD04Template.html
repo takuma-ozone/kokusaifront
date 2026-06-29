@@ -34,29 +34,7 @@
       </template>
     </ra-popup>
 
-    <!--英国郵便ポップアップ-->
-    <ra-popup :visible.sync="command.isEikokuPopupOpen" title="英国郵便入力方法" @close="closeEikokuPopup" width="800px">
-      <el-header id="headerArea" height="300px">
-        <div>
-          <img src="../../../assets/eikokuyubin.png" width="676px" height="300px">
-        </div>
-      </el-header>
-      <template #footer>
-        <ra-button class="pupup-button" type="primary" @click="closeEikokuPopup">閉じる</ra-button>
-      </template>
-    </ra-popup>
-    
-    <!--書類発送ポップアップ-->
-    <ra-popup :visible.sync="command.isShoruiPopupOpen" title="書類の発送について" @close="closeShoruiPopup" width="800px">
-      <el-header id="headerArea" height="400px">
-        <div>
-          <img src="../../../assets/shoruihassou.png" width="676px" height="400px">
-        </div>
-      </el-header>
-      <template #footer>
-        <ra-button class="pupup-button" type="primary" @click="closeShoruiPopup">閉じる</ra-button>
-      </template>
-    </ra-popup>
+
 
   <div v-for="error in bind_params.model.errors" :key="error">
     <div class="messageGuide" v-if="bind_params.model.errors !== ''">
@@ -627,16 +605,6 @@
               filterable
             ></sm-select>
           </ra-tooltip>
-          &emsp;内容品が書類の場合でも仕向国により<u>スモールパーセル（小荷物）</u>を<br />
-          &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-          &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-          &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-          ご選択いただく必要があります。 詳しくは
-          <ra-button type="text" @click="openShoruiPopup">
-            こちら
-          </ra-button>
-                をご覧ください。
-          <br />
         </div>
         <div class="">
           <div>
