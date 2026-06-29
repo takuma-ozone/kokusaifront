@@ -833,12 +833,12 @@ export default {
     closeEikokuPopup() {
       this.command.isEikokuPopupOpen = false;
     },
-    //ポップアップ開く
+    //英国郵便ポップアップ開く
     openEikokuPopup() {
       this.command.isEikokuPopupOpen = true;
     },
 
-    //英国郵便ポップアップ閉じる
+    //書類発送ポップアップ閉じる
     closeShoruiPopup() {
       this.command.isShoruiPopupOpen = false;
     },
